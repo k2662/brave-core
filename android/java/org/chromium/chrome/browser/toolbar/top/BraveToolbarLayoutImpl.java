@@ -312,7 +312,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 currentTab.reloadIgnoringCache();
                 if (null != mBraveShieldsHandler) {
                     // Clean the Bravery Panel
-                    mBraveShieldsHandler.updateValues(0, 0, 0, 0);
+                    mBraveShieldsHandler.updateValues(0, 0, 0);
                 }
             }
         });

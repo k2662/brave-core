@@ -1395,6 +1395,10 @@ constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
 
 constexpr char kPolygonMainnetEndpoint[] = "https://mainnet-polygon.brave.com/";
 
+// Ankr constants
+constexpr char kAnkrAdvancedAPIBaseURL[] =
+    "https://multichain.ankr.wallet.brave.com/";
+
 // Unstoppable domains record key for ethereum address.
 constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 // Unstoppable domains record key for solana address.
@@ -1424,6 +1428,7 @@ bool HasJupiterFeesForTokenMint(const std::string& mint);
 const std::vector<std::string>& GetEthSupportedNftInterfaces();
 // Returns the URL for the Ratios service.
 const std::string GetAssetRatioBaseURL();
+const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
 
 }  // namespace brave_wallet
 

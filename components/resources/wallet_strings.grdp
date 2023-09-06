@@ -1011,4 +1011,12 @@
   <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED" desc="Indicates that an asset has been verified">This token is verified</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS" desc="Indicates that an asset has been verified by multiple token list providers">This token is verified on <ph name="NUMBER_OF_LISTS">$1<ex>2</ex></ph> lists</message>
   <message name="IDS_BRAVE_WALLET_SPENDER_ADDRESS" desc="Indicates which address is spending funds">Spender: <ph name="ADDRESS">$1<ex>0x1234...abcd</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_ENHANCED_TRANSACTION_DETAILS_TITLE" desc="Heading text for Transaction Simulations Opt-in modal">Enable Enhanced Transaction Details to:</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_SEE_ESTIMATES" desc="Bullet point for transaction-simulation feature (view balance changes)">See estimated balance change</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_MALICIOUS" desc="Bullet point for transaction-simulation feature (detect malicious transactions)">Identify potentially malicious transactions</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_PHISHING" desc="Bullet point for transaction-simulation feature (detect phishing attempts)">Help detect phishing attempts</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_NO_THANKS" desc="Button text for declining an action">No thanks</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_ENABLE" desc="Button text for enabling a feature">Enable</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explaination of terms of service for transaction simulations">Brave works with a partner to provide this service. By enabling, you agree to share unsigned transactions and their DApp URLs with our partner.</message>
+  <message name="IDS_BRAVE_WALLET_CHANGE_ANYTIME_IN_SETTINGS" desc="Explains that something can be changed from within settings">Change anytime in <ph name="TAG_BEFORE">$1</ph>Settings<ph name="TAG_AFTER">$2</ph>.</message>
 </grit-part>

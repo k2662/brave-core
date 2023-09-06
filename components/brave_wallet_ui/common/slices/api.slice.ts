@@ -2569,7 +2569,8 @@ export function createWalletApi () {
       >({
         queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
           try {
-            const { ethTxManagerProxy } = baseQuery(undefined).data
+            const { data: api } = baseQuery(undefined)
+            const { ethTxManagerProxy } = api
 
             const isEIP1559 =
               payload.maxPriorityFeePerGas !== undefined &&
@@ -2629,13 +2630,15 @@ export function createWalletApi () {
           } catch (error) {
             return handleEndpointError(
               endpoint,
-              'An error occurred while updating an transaction\'s gas',
+              "An error occurred while updating an transaction's gas",
               error
             )
           }
         },
         invalidatesTags: (res, err, arg) =>
-          err ? [TX_CACHE_TAGS.TXS_LIST] : [TX_CACHE_TAGS.ID(arg.txMetaId)]
+          err
+            ? [TX_CACHE_TAGS.TXS_LIST, 'UNKNOWN_ERROR']
+            : [TX_CACHE_TAGS.ID(arg.txMetaId), 'GasEstimation1559']
       }),
       updateUnapprovedTransactionSpendAllowance: mutation<
         { success: boolean },
@@ -2787,8 +2790,8 @@ export function createWalletApi () {
             return handleEndpointError(
               endpoint,
               'Cancel transaction failed: ' +
-              `id=${payload.transactionId} ` +
-              `err=${error}`,
+                `id=${payload.transactionId} ` +
+                `err=${error}`,
               error
             )
           }
@@ -2827,8 +2830,8 @@ export function createWalletApi () {
             return handleEndpointError(
               endpoint,
               'Speedup transaction failed: ' +
-              `id=${payload.transactionId} ` +
-              `err=${error}`,
+                `id=${payload.transactionId} ` +
+                `err=${error}`,
               error
             )
           }

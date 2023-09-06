@@ -64,8 +64,15 @@ export const decodeSimulatedSVMStateChanges = (
   for (const stateChange of stateChanges) {
     const { data } = stateChange.rawInfo
 
+    // TODO: account owner changes
+    // if (data) {
+    //   changes.svmStakeAuthorityChanges.push(
+    //     stateChange as SafeSolanaAccountOwnerChangeEvent
+    //   )
+    // }
+
     // staking auth changes
-    if (data.solStakeAuthorityChangeData) {
+    if (stateChange.rawInfo.data.solStakeAuthorityChangeData) {
       changes.solStakeAuthorityChanges.push(stateChange)
     }
 
@@ -85,4 +92,34 @@ export const decodeSimulatedSVMStateChanges = (
 
 export const isUrlWarning = (warningKind: BraveWallet.BlowfishWarningKind) => {
   return BLOWFISH_URL_WARNING_KINDS.includes(warningKind)
+}
+
+export const translateEvmSimulationResultError = (
+  error:
+    | BraveWallet.BlowfishEVMError
+    | BraveWallet.BlowfishSolanaError
+    | undefined
+) => {
+  if (!error) {
+    return ''
+  }
+
+  switch (error?.kind) {
+    case BraveWallet.BlowfishEVMErrorKind.kSimulationFailed:
+      // TODO: getLocale('')
+      return 'SIMULATION_FAILED'
+
+    case BraveWallet.BlowfishEVMErrorKind.kTransactionError:
+      // TODO: getLocale('')
+      return 'TRANSACTION_ERROR'
+
+    case BraveWallet.BlowfishEVMErrorKind.kTransactionReverted:
+      // TODO: getLocale('')
+      return 'TRANSACTION_REVERTED'
+
+    case BraveWallet.BlowfishEVMErrorKind.kUnknownError:
+    default:
+      // TODO: getLocale('')
+      return error.humanReadableError || 'UNKNOWN ERROR'
+  }
 }

@@ -97,9 +97,9 @@ void BraveWebMainParts::PreCreateThreads() {
 
 void BraveWebMainParts::SetupMetrics() {
   metrics::MetricsService* metrics = application_context_->GetMetricsService();
-  metrics->GetSyntheticTrialRegistry()->AddSyntheticTrialObserver(
+  metrics->GetSyntheticTrialRegistry()->AddObserver(
       variations::VariationsIdsProvider::GetInstance());
-  metrics->GetSyntheticTrialRegistry()->AddSyntheticTrialObserver(
+  metrics->GetSyntheticTrialRegistry()->AddObserver(
       variations::SyntheticTrialsActiveGroupIdProvider::GetInstance());
   // Now that field trials have been created, initializes metrics recording.
   metrics->InitializeMetricsRecordingState();

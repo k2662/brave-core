@@ -3,17 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("common") {
+source_set("de_amp") {
   sources = [
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
+    "de_amp_prefs+private.h",
+    "de_amp_prefs.h",
+    "de_amp_prefs.mm",
   ]
-
   deps = [
     "//base",
+    "//brave/components/de_amp/common",
     "//components/prefs",
-    "//url",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
   ]
+  frameworks = [ "Foundation.framework" ]
 }

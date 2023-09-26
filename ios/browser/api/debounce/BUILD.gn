@@ -3,17 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("common") {
+source_set("debounce") {
   sources = [
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
+    "debounce_service+private.h",
+    "debounce_service.h",
+    "debounce_service.mm",
   ]
-
   deps = [
     "//base",
-    "//components/prefs",
+    "//brave/components/debounce/browser/core",
+    "//net",
     "//url",
   ]
+  frameworks = [ "Foundation.framework" ]
 }

@@ -18,7 +18,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/debounce/browser/debounce_component_installer.h"
+#include "brave/components/debounce/browser/core/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/debounce/common/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

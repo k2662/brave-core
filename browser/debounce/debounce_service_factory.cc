@@ -11,7 +11,7 @@
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/debounce/browser/debounce_service.h"
+#include "brave/components/debounce/browser/core/debounce_service.h"
 #include "brave/components/debounce/common/features.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"

@@ -35,7 +35,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/debounce/browser/debounce_component_installer.h"
+#include "brave/components/debounce/browser/core/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/localhost_permission/localhost_permission_component.h"

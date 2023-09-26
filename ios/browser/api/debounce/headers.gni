@@ -3,17 +3,5 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("common") {
-  sources = [
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
-  ]
-
-  deps = [
-    "//base",
-    "//components/prefs",
-    "//url",
-  ]
-}
+browser_api_debounce_public_headers =
+    [ "//brave/ios/browser/api/debounce/debounce_service.h" ]

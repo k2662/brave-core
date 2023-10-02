@@ -724,11 +724,6 @@
     *** updateVisibility(...);
 }
 
-
--keep class org.chromium.chrome.browser.paint_preview.StartupPaintPreviewHelper {
-    *** isEnabled(...);
-}
-
 -keep class org.chromium.chrome.browser.document.ChromeLauncherActivity {
     public <init>(...);
 }

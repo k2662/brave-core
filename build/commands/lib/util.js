@@ -284,6 +284,12 @@ const util = {
       path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
           'chrome_logo_dark.svg')])
 
+    // Override Password Manager icons
+    fileMap.add([
+      path.join(braveBrowserResourcesDir, 'password_manager', 'images', 'password_manager_logo.svg'),
+      path.join(chromeBrowserResourcesDir, 'password_manager', 'images', 'password_manager_logo.svg')
+    ])
+
     let explicitSourceFiles = new Set()
     if (config.getTargetOS() === 'mac') {
       // Set proper mac app icon for channel to chrome/app/theme/mac/app.icns.

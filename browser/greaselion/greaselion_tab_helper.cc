@@ -23,12 +23,17 @@ namespace greaselion {
 GreaselionTabHelper::GreaselionTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<GreaselionTabHelper>(*web_contents) {
+  // Can be nullptr in unit tests.
   download_service_ = g_brave_browser_process->greaselion_download_service();
-  download_service_->AddObserver(this);
+  if (download_service_) {
+    download_service_->AddObserver(this);
+  }
 }
 
 GreaselionTabHelper::~GreaselionTabHelper() {
-  download_service_->RemoveObserver(this);
+  if (download_service_) {
+    download_service_->RemoveObserver(this);
+  }
 }
 
 void GreaselionTabHelper::OnRulesReady(

@@ -65,7 +65,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*
 TestingBraveBrowserProcess::greaselion_download_service() {
-  NOTREACHED();
   return nullptr;
 }
 #endif
@@ -155,14 +154,12 @@ TestingBraveBrowserProcess::ads_brave_stats_helper() {
 
 ntp_background_images::NTPBackgroundImagesService*
 TestingBraveBrowserProcess::ntp_background_images_service() {
-  NOTREACHED();
   return nullptr;
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 speedreader::SpeedreaderRewriterService*
 TestingBraveBrowserProcess::speedreader_rewriter_service() {
-  NOTREACHED();
   return nullptr;
 }
 #endif

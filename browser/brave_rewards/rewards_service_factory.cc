@@ -50,6 +50,11 @@ RewardsService* RewardsServiceFactory::GetForProfile(
     return testing_service_;
   }
 
+  // Do not create in unit tests.
+  if (profile->AsTestingProfile()) {
+    return nullptr;
+  }
+
   if (!IsSupportedForProfile(profile)) {
     return nullptr;
   }

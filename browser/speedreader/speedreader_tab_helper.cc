@@ -251,6 +251,10 @@ void SpeedreaderTabHelper::ProcessNavigation(
 
   auto* rewriter_service =
       g_brave_browser_process->speedreader_rewriter_service();
+  // Can be nullptr in unit tests.
+  if (!rewriter_service) {
+    return;
+  }
   auto* nav_entry = navigation_handle->GetNavigationEntry();
 
   const bool url_looks_readable =

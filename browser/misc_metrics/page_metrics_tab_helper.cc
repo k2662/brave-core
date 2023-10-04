@@ -14,9 +14,9 @@ namespace misc_metrics {
 PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<PageMetricsTabHelper>(*web_contents) {
+  // Can be nullptr in unit tests.
   page_metrics_service_ = PageMetricsServiceFactory::GetServiceForContext(
       web_contents->GetBrowserContext());
-  DCHECK(page_metrics_service_);
 }
 
 PageMetricsTabHelper::~PageMetricsTabHelper() = default;

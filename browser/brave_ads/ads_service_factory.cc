@@ -28,6 +28,11 @@ namespace brave_ads {
 
 // static
 AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
+  // Do not create in unit tests.
+  if (profile->AsTestingProfile()) {
+    return nullptr;
+  }
+
   if (!brave_rewards::IsSupportedForProfile(profile)) {
     return nullptr;
   }

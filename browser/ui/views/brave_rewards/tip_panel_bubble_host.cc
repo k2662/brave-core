@@ -61,8 +61,10 @@ views::View* GetAnchorView(Browser* browser) {
 TipPanelBubbleHost::TipPanelBubbleHost(Browser* browser)
     : BrowserUserData<TipPanelBubbleHost>(*browser) {
   auto* coordinator = TipPanelCoordinator::FromBrowser(browser);
-  DCHECK(coordinator);
-  coordinator->AddObserver(this);
+  // Can be nullptr in unit tests.
+  if (coordinator) {
+    coordinator->AddObserver(this);
+  }
 }
 
 TipPanelBubbleHost::~TipPanelBubbleHost() {

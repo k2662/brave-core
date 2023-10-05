@@ -30,18 +30,29 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
   if (auto* list = topic_articles_json.GetIfList()) {
     for (const auto& a : *list) {
       auto article_raw = api::topics::TopicArticle::FromValue(a);
+      if (!article_raw.has_value()) {
+        LOG(ERROR) << "Failed to parse article: " << article_raw.error();
+        LOG(ERROR) << "JSON: " << a;
+        continue;
+      }
       TopicArticle article;
       article.title = article_raw->title;
       article.category = article_raw->category;
-      article.description = article_raw->description;
+      if (article_raw->description) {
+        article.description = article_raw->description.value();
+      }
       article.url = GURL(article_raw->url);
-      article.img = GURL(article_raw->img);
+      if (article_raw->img) {
+        article.img = GURL(article_raw->img.value());
+      }
       article.origin = article_raw->origin;
-      article.publish_time = article_raw->publish_time;
+      //   article.publish_time = article_raw->publish_time;
       article.score = article_raw->score;
 
       articles[article_raw->topic_index].push_back(std::move(article));
     }
+  } else {
+    LOG(ERROR) << "Topics response was not a list!";
   }
 
   if (auto* list = topics_json.GetIfList()) {
@@ -65,6 +76,8 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
 
       result.push_back(std::move(topic));
     }
+  } else {
+    LOG(ERROR) << "Topic News response was not a list";
   }
 
   return result;
@@ -99,8 +112,8 @@ void TopicsFetcher::GetTopics(const std::string& locale,
 }
 
 void TopicsFetcher::FetchTopics(FetchState state) {
-  GURL url(base::StrCat({brave_news::GetHostname(), kTopicsEndpoint, ".",
-                         state.locale, ".json"}));
+  GURL url(base::StrCat({"https://", brave_news::GetHostname(), kTopicsEndpoint,
+                         ".", state.locale, ".json"}));
   api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(&TopicsFetcher::OnFetchedTopics, base::Unretained(this),
@@ -110,14 +123,15 @@ void TopicsFetcher::FetchTopics(FetchState state) {
 void TopicsFetcher::OnFetchedTopics(
     FetchState state,
     api_request_helper::APIRequestResult result) {
+  // TODO: Handle failure.
   // TODO: Don't clone
   state.topic_articles_json = result.value_body().Clone();
   FetchTopicArticles(std::move(state));
 }
 
 void TopicsFetcher::FetchTopicArticles(FetchState state) {
-  GURL url(base::StrCat({brave_news::GetHostname(), kTopicArticlesEndpoint, ".",
-                         state.locale, ".json"}));
+  GURL url(base::StrCat({"https://", brave_news::GetHostname(),
+                         kTopicArticlesEndpoint, ".", state.locale, ".json"}));
   api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(&TopicsFetcher::OnFetchedTopicArticles,
@@ -127,6 +141,12 @@ void TopicsFetcher::FetchTopicArticles(FetchState state) {
 void TopicsFetcher::OnFetchedTopicArticles(
     FetchState state,
     api_request_helper::APIRequestResult result) {
+  if (!result.Is2XXResponseCode()) {
+    LOG(ERROR) << "Failed to get topic articles: " << result.error_code()
+               << ", " << result.body();
+    std::move(state.callback).Run({});
+    return;
+  }
   // TODO: Don't clone
   state.topic_articles_json = result.value_body().Clone();
 

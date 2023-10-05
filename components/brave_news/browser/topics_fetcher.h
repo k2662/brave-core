@@ -15,8 +15,8 @@
 
 namespace brave_news {
 
-constexpr char kTopicsEndpoint[] = "news-topic-clustering/topics";
-constexpr char kTopicArticlesEndpoint[] = "news-topic-clustering/topics_news";
+constexpr char kTopicsEndpoint[] = "/news-topic-clustering/topics";
+constexpr char kTopicArticlesEndpoint[] = "/news-topic-clustering/topics_news";
 
 struct TopicArticle {
   TopicArticle();

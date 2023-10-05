@@ -12,11 +12,10 @@ namespace topics {
     long topic_index;
 
     DOMString title;
-    DOMString description;
+    DOMString? description;
     DOMString url;
-    DOMString img;
+    DOMString? img;
     DOMString publisher_name;
-    long publish_time;
     double score;
     DOMString category;
     DOMString origin;

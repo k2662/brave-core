@@ -13,6 +13,10 @@ if (is_official_build) {
 
 static_library("core") {
   sources = [
+    "ai_chat_feedback_api.cc",
+    "ai_chat_feedback_api.h",
+    "ai_chat_helper.cc",
+    "ai_chat_helper.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "constants.cc",
@@ -30,11 +34,14 @@ static_library("core") {
 
   deps = [
     "//base",
+    "//brave/brave_domains",
     "//brave/components/ai_chat/common",
     "//brave/components/ai_chat/common/buildflags",
     "//brave/components/ai_chat/common/mojom",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
     "//brave/components/constants",
+    "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
     "//brave/components/time_period_storage",

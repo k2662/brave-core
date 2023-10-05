@@ -13,7 +13,6 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"

@@ -11,6 +11,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
 
@@ -58,7 +59,7 @@ class TopicsFetcher {
  public:
   using TopicsCallback = base::OnceCallback<void(std::vector<Topic> topics)>;
   explicit TopicsFetcher(
-      api_request_helper::APIRequestHelper& api_request_helper);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   TopicsFetcher(const TopicsFetcher&) = delete;
   TopicsFetcher& operator=(const TopicsFetcher&) = delete;
   ~TopicsFetcher();
@@ -84,7 +85,7 @@ class TopicsFetcher {
   void FetchTopicArticles(FetchState state);
   void OnFetchedTopicArticles(FetchState state,
                               api_request_helper::APIRequestResult result);
-  raw_ref<api_request_helper::APIRequestHelper> api_request_helper_;
+  api_request_helper::APIRequestHelper api_request_helper_;
 };
 
 }  // namespace brave_news

@@ -23,10 +23,13 @@
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
@@ -374,6 +377,7 @@ FeedV2Builder::FeedV2Builder(
       suggestions_controller_(suggestions_controller),
       prefs_(prefs),
       fetcher_(publishers_controller, channels_controller, url_loader_factory),
+      topics_fetcher_(url_loader_factory),
       signal_calculator_(publishers_controller,
                          channels_controller,
                          prefs,
@@ -462,6 +466,22 @@ void FeedV2Builder::OnGotSuggestedPublisherIds(
     const std::vector<std::string>& suggested_ids) {
   DVLOG(1) << __FUNCTION__;
   suggested_publisher_ids_ = suggested_ids;
+
+  GetTopics();
+}
+
+void FeedV2Builder::GetTopics() {
+  DVLOG(1) << __FUNCTION__;
+  topics_fetcher_.GetTopics(publishers_controller_->GetLastLocale(),
+                            base::BindOnce(&FeedV2Builder::OnGotTopics,
+                                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void FeedV2Builder::OnGotTopics(std::vector<Topic> topics) {
+  DVLOG(1) << __FUNCTION__;
+  topics_ = std::move(topics);
+
+  LOG(ERROR) << "Topic Count: " << topics.size();
   BuildFeedFromArticles();
 }
 

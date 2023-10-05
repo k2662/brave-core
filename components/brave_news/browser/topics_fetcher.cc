@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/api/topics.h"
+#include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/urls.h"
 
 namespace brave_news {
@@ -86,8 +87,9 @@ TopicsFetcher::FetchState::~FetchState() = default;
 TopicsFetcher::FetchState::FetchState(FetchState&&) = default;
 
 TopicsFetcher::TopicsFetcher(
-    api_request_helper::APIRequestHelper& api_request_helper)
-    : api_request_helper_(api_request_helper) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : api_request_helper_(GetNetworkTrafficAnnotationTag(),
+                          url_loader_factory) {}
 
 TopicsFetcher::~TopicsFetcher() = default;
 
@@ -99,7 +101,7 @@ void TopicsFetcher::GetTopics(const std::string& locale,
 void TopicsFetcher::FetchTopics(FetchState state) {
   GURL url(base::StrCat({brave_news::GetHostname(), kTopicsEndpoint, ".",
                          state.locale, ".json"}));
-  api_request_helper_->Request(
+  api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(&TopicsFetcher::OnFetchedTopics, base::Unretained(this),
                      std::move(state)));
@@ -108,6 +110,7 @@ void TopicsFetcher::FetchTopics(FetchState state) {
 void TopicsFetcher::OnFetchedTopics(
     FetchState state,
     api_request_helper::APIRequestResult result) {
+  // TODO: Don't clone
   state.topic_articles_json = result.value_body().Clone();
   FetchTopicArticles(std::move(state));
 }
@@ -115,7 +118,7 @@ void TopicsFetcher::OnFetchedTopics(
 void TopicsFetcher::FetchTopicArticles(FetchState state) {
   GURL url(base::StrCat({brave_news::GetHostname(), kTopicArticlesEndpoint, ".",
                          state.locale, ".json"}));
-  api_request_helper_->Request(
+  api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(&TopicsFetcher::OnFetchedTopicArticles,
                      base::Unretained(this), std::move(state)));
@@ -124,6 +127,7 @@ void TopicsFetcher::FetchTopicArticles(FetchState state) {
 void TopicsFetcher::OnFetchedTopicArticles(
     FetchState state,
     api_request_helper::APIRequestResult result) {
+  // TODO: Don't clone
   state.topic_articles_json = result.value_body().Clone();
 
   auto topics = ParseTopics(state.topics_json, state.topic_articles_json);

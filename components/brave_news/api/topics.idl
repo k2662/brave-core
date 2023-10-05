@@ -29,7 +29,7 @@ namespace topics {
     DOMString claude_title_short;
     DOMString most_popular_query;
     DOMString[] queries;
-    long timestamp;
+    // long timestamp;
     double overall_score;
     double breaking_score;
   };

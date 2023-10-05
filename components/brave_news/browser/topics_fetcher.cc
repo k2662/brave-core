@@ -52,12 +52,16 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       articles[article_raw->topic_index].push_back(std::move(article));
     }
   } else {
-    LOG(ERROR) << "Topics response was not a list!";
+    LOG(ERROR) << "topic articles response was not a list!";
   }
 
   if (auto* list = topics_json.GetIfList()) {
     for (const auto& t : *list) {
       auto topic_raw = api::topics::Topic::FromValue(t);
+      if (!topic_raw.has_value()) {
+        LOG(ERROR) << "Failed to parse topic: " << topic_raw.error();
+        continue;
+      }
       Topic topic;
       topic.title = topic_raw->title;
       topic.claude_title = topic_raw->claude_title;
@@ -66,7 +70,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       topic.overall_score = topic_raw->overall_score;
       topic.most_popular_query = topic_raw->most_popular_query;
       topic.queries = topic_raw->queries;
-      topic.timestamp = topic_raw->timestamp;
+      //   topic.timestamp = topic_raw->timestamp;
 
       // There should only be one topic for a set of topic_articles.
       auto it = articles.find(topic_raw->topic_index);
@@ -77,7 +81,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       result.push_back(std::move(topic));
     }
   } else {
-    LOG(ERROR) << "Topic News response was not a list";
+    LOG(ERROR) << "topics response was not a list: " << topics_json;
   }
 
   return result;
@@ -123,9 +127,14 @@ void TopicsFetcher::FetchTopics(FetchState state) {
 void TopicsFetcher::OnFetchedTopics(
     FetchState state,
     api_request_helper::APIRequestResult result) {
-  // TODO: Handle failure.
+  if (!result.Is2XXResponseCode()) {
+    LOG(ERROR) << "Failed to get topics: " << result.error_code() << ", "
+               << result.body();
+    std::move(state.callback).Run({});
+    return;
+  }
   // TODO: Don't clone
-  state.topic_articles_json = result.value_body().Clone();
+  state.topics_json = result.value_body().Clone();
   FetchTopicArticles(std::move(state));
 }
 

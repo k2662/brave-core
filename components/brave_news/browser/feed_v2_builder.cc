@@ -481,7 +481,7 @@ void FeedV2Builder::OnGotTopics(std::vector<Topic> topics) {
   DVLOG(1) << __FUNCTION__;
   topics_ = std::move(topics);
 
-  LOG(ERROR) << "Topic Count: " << topics.size();
+  LOG(ERROR) << "Topic Count: " << topics_.size();
   BuildFeedFromArticles();
 }
 

@@ -9,6 +9,7 @@
 #include <vector>
 #include "base/allocator/partition_allocator/pointers/raw_ref.h"
 #include "base/functional/callback_forward.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace brave_news {
@@ -19,6 +20,7 @@ constexpr char kTopicArticlesEndpoint[] = "news-topic-clustering/topics_news";
 struct TopicArticle {
   TopicArticle();
   TopicArticle(const TopicArticle&) = delete;
+  TopicArticle(TopicArticle&&);
   TopicArticle& operator=(const TopicArticle&) = delete;
   ~TopicArticle();
 
@@ -36,6 +38,7 @@ struct TopicArticle {
 struct Topic {
   Topic();
   Topic(const Topic&) = delete;
+  Topic(Topic&&);
   Topic& operator=(const Topic&) = delete;
   ~Topic();
 
@@ -66,8 +69,8 @@ class TopicsFetcher {
   struct FetchState {
     std::string locale;
     TopicsCallback callback;
-    std::string topics_json = "";
-    std::string topic_articles_json = "";
+    base::Value topics_json;
+    base::Value topic_articles_json;
 
     FetchState(std::string locale, TopicsCallback callback);
     ~FetchState();

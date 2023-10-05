@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index b12ca875746ef64c05cbc9a1de0769a8f3c65f47..71da65021b83e37ef478963e3f9c1b654825232f 100644
+index 093107a7e9b6348dff37e005f4ef4bd331b21e04..449d30cbfd4cc0944e2991fa1af73756a1d3a8c2 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -172,6 +172,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest {
-                              ->GetUnderlyingOpenTabsUIDelegateForTest());
+@@ -166,6 +166,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest {
+     helper->VerifyExport(session_sync_service_->GetOpenTabsUIDelegate());
    }
  
 +  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
   private:
    raw_ptr<sync_sessions::SessionSyncService, DanglingUntriaged>
        session_sync_service_;
-@@ -580,8 +581,8 @@ TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
+@@ -560,8 +561,8 @@ TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
    EXPECT_THAT(base::span<const std::u16string>(
                    recent_tabs_builder.GetTabTitlesSortedByRecency())
                    .subspan(0, 3),
@@ -21,7 +21,7 @@ index b12ca875746ef64c05cbc9a1de0769a8f3c65f47..71da65021b83e37ef478963e3f9c1b65
  }
  
  TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
-@@ -618,6 +619,6 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+@@ -598,6 +599,6 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
    EXPECT_THAT(base::span<const std::u16string>(
                    recent_tabs_builder.GetTabTitlesSortedByRecency())
                    .subspan(0, 4),

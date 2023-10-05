@@ -30,6 +30,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
@@ -318,6 +319,44 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   return result;
 }
 
+std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
+    std::vector<Topic>& topics,
+    const Publishers& publishers) {
+  if (topics.empty()) {
+    return {};
+  }
+  DVLOG(1) << __FUNCTION__;
+  auto result = mojom::Cluster::New();
+  result->type = "topic";
+
+  auto topic = std::move(topics[0]);
+  topics.erase(topics.begin());
+  result->id = topic.title;
+
+  for (const auto& article : topic.articles) {
+    auto item = mojom::FeedItemMetadata::New();
+    auto id_it = base::ranges::find_if(publishers, [&article](const auto& p) {
+      return p.second->publisher_name == article.publisher_name;
+    });
+    if (id_it != publishers.end()) {
+      item->publisher_id = id_it->first;
+    }
+    item->publisher_name = article.publisher_name;
+    item->category_name = article.category;
+    item->description = article.description;
+    item->title = article.title;
+    item->url = article.url;
+    item->publish_time = base::Time::Now();
+    item->image = mojom::Image::NewImageUrl(article.img);
+    result->articles.push_back(mojom::ArticleElements::NewArticle(
+        mojom::Article::New(std::move(item), false)));
+  }
+
+  std::vector<mojom::FeedItemV2Ptr> items;
+  items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
+  return items;
+}
+
 // Generates a "Special Block" this will be one of the following:
 // 1. An advert, if we have one
 // 2. A "Discover" entry, which suggests some more publishers for the user to
@@ -505,6 +544,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
   auto suggested_publisher_ids = suggested_publisher_ids_;
   auto articles = GetArticleInfos(raw_feed_items_, signals_);
   auto feed = mojom::FeedV2::New();
+  auto topics = topics_;
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
@@ -550,7 +590,9 @@ void FeedV2Builder::BuildFeedFromArticles() {
         // too.
         auto channel = PickRandom(subscribed_channels);
         DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
-        items = GenerateChannelBlock(articles, publishers, channel, locale);
+        items = TossCoin() ? GenerateChannelBlock(articles, publishers, channel,
+                                                  locale)
+                           : GenerateTopicBlock(topics, publishers);
       } else {
         DVLOG(1) << "Step 4: Nothing (no subscribed channels)";
       }

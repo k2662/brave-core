@@ -20,9 +20,9 @@ constexpr char kTopicArticlesEndpoint[] = "/news-topic-clustering/topics_news";
 
 struct TopicArticle {
   TopicArticle();
-  TopicArticle(const TopicArticle&) = delete;
+  TopicArticle(const TopicArticle&);
   TopicArticle(TopicArticle&&);
-  TopicArticle& operator=(const TopicArticle&) = delete;
+  TopicArticle& operator=(const TopicArticle&);
   ~TopicArticle();
 
   std::string title;
@@ -38,9 +38,9 @@ struct TopicArticle {
 
 struct Topic {
   Topic();
-  Topic(const Topic&) = delete;
+  Topic(const Topic&);
   Topic(Topic&&);
-  Topic& operator=(const Topic&) = delete;
+  Topic& operator=(const Topic&);
   ~Topic();
 
   std::string title;

@@ -91,11 +91,15 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
 
 TopicArticle::TopicArticle() = default;
 TopicArticle::~TopicArticle() = default;
+TopicArticle::TopicArticle(const TopicArticle&) = default;
 TopicArticle::TopicArticle(TopicArticle&&) = default;
+TopicArticle& TopicArticle::operator=(const TopicArticle&) = default;
 
 Topic::Topic() = default;
 Topic::~Topic() = default;
+Topic::Topic(const Topic&) = default;
 Topic::Topic(Topic&&) = default;
+Topic& Topic::operator=(const Topic&) = default;
 
 TopicsFetcher::FetchState::FetchState(std::string locale,
                                       TopicsCallback callback)

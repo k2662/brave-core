@@ -6414,6 +6414,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_GENERATION_EDIT_PASSWORD" desc="Text shown below the generated password describing the action to edit it directly.">
           Edit password
         </message>
+        <message name="IDS_PASSWORD_GENERATION_NUDGE_CANCEL_BUTTON" desc="Text shown on a cancel button in the password generation flow.">
+          Choose your own
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM" desc="In Title Case: Text shown next to a generated password describing it as a suggestion.">
@@ -6433,6 +6436,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_GENERATION_EDIT_PASSWORD" desc="Text shown below the generated password describing the action to edit it directly.">
           Edit Password
+        </message>
+        <message name="IDS_PASSWORD_GENERATION_NUDGE_CANCEL_BUTTON" desc="Text shown on a cancel button in the password generation flow.">
+          Choose Your Own
         </message>
       </if>
 
@@ -6506,6 +6512,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PASSWORD_GENERATION_HELP_TEXT_CONVENIENCE" desc="Autofill dropdown text describing password generation with a convenience proposition.">
           Sign up and sign in faster when your password is automatically saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
+      </message>
+      <message name="IDS_PASSWORD_GENERATION_NUDGE_TITLE" desc="Autofill dropdown title describing password generation.">
+          Brave Password Manager created a strong password for this website
       </message>
       <message name="IDS_PASSWORD_GENERATION_BENEFITS" desc="Autofill dropdown text before listing bullet points of password generation benefits.">
           When you use and save this password:
@@ -9925,6 +9934,18 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON" desc="The label for the button in the not started state of the tab organization UI" translateable="false">
         Organize tabs
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_IN_PROGRESS_TITLE" desc="The header text for the in progress state in the tab organization UI" translateable="false">
+        Organizing…
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_SUCCESS_TITLE" desc="The header text for the success state in the tab organization UI" translateable="false">
+        Tab organization found
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_FAILURE_TITLE_GENERIC" desc="The header text for the generic failure state in the tab organization UI" translateable="false">
+        Something went wrong
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_FAILURE_BODY_GENERIC" desc="The body text for the generic failure state in the tab organization UI" translateable="false">
+        Tab organization is currently unavailable
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -13909,40 +13930,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <!-- Windows 10 toast strings -->
-    <if expr="is_win">
-      <message name="IDS_WIN10_TOAST_BROWSE_FAST" desc="Toast message variant: browse fast.">
-        Browse fast with Brave
-      </message>
-      <message name="IDS_WIN10_TOAST_BROWSE_SAFELY" desc="Toast message variant: browse safely.">
-        Browse safely with Brave
-      </message>
-      <message name="IDS_WIN10_TOAST_BROWSE_SMART" desc="Toast message variant: browse smart.">
-        Browse smart with Brave
-      </message>
-      <message name="IDS_WIN10_TOAST_SWITCH_FAST" desc="Toast message variant: switch to a fast browser.">
-        Switch to a fast browser
-      </message>
-      <message name="IDS_WIN10_TOAST_SWITCH_SMART" desc="Toast message variant: switch to a smart browser.">
-        Switch to a smart browser
-      </message>
-      <message name="IDS_WIN10_TOAST_SWITCH_SECURE" desc="Toast message variant: switch to a secure browser.">
-        Switch to a secure browser
-      </message>
-      <message name="IDS_WIN10_TOAST_SWITCH_SMART_AND_SECURE" desc="Toast message variant: switch to a smart and secure browser.">
-        Switch to a smart and secure browser
-      </message>
-      <message name="IDS_WIN10_TOAST_RECOMMENDATION" desc="Toast header label noting Brave recommends Brave.">
-        Brave recommends Brave
-      </message>
-      <message name="IDS_WIN10_TOAST_OPEN_CHROME" desc="The label on the button to dismiss the toast and launch Brave.">
-        Open Brave
-      </message>
-      <message name="IDS_WIN10_TOAST_NO_THANKS" desc="The label on the button to dismiss the toast without launching Brave.">
-        No thanks
-      </message>
-    </if>
-
     <!-- Consistent omnibox geolocation -->
     <if expr="is_android">
         <message name="IDS_SEARCH_GEOLOCATION_DISCLOSURE_INFOBAR_TEXT" desc="Text to put in the infobar disclosing the default search engine's usage of location. The message contains a link to a settings page. The link text is a separate string in the translation console and appears here as a placeholder text.">
@@ -15582,27 +15569,63 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Protected Audiences Debugging is enabled.
     </message>
 
+    <!-- Infobar shown when test-third-party-cookies switch is enabled -->
+    <message name="IDS_TEST_THIRD_PARTY_COOKIE_BLOCKING_PHASEOUT_INFO" desc="Text of infobar that shows up when the user starts Brave with the --test-third-party-cookie-phaseout command line flag">
+      You have enabled testing third-party cookie phaseout. This cannot be overridden by the settings page. If you want to re-enable third-party cookies, relaunch Brave with this feature disabled.
+    </message>
+
     <!-- Experimental enterprise plus_addresses feature strings -->
     <message name="IDS_PLUS_ADDRESS_MODAL_TITLE" desc="Title for the experimental enterprise plus addresses feature modal" translateable="false">
       Lorem Ipsum
     </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_LABEL" desc="Label for the upper portion of the plus addresses modal" translateable="false" formatter_data="android_java">
+    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_LABEL" desc="Label for the upper portion of the plus addresses modal" translateable="false">
       Lorem Ipsum
     </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_PROPOSED_PLUS_ADDRESS_PLACEHOLDER" desc="A placeholder for the plus address" translateable="false" formatter_data="android_java">
+    <message name="IDS_PLUS_ADDRESS_MODAL_PROPOSED_PLUS_ADDRESS_PLACEHOLDER" desc="A placeholder for the plus address" translateable="false">
       Lorem Ipsum or whatever
     </message>
     <message name="IDS_PLUS_ADDRESS_MODAL_REGULAR_ADDRESS_LABEL" desc="A label for the regular address in the plus address modal" translateable="false">
       For <ph name="REGULAR_ADDRESS">$1<ex>test@example.test</ex></ph>
     </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_DESCRIPTION" desc="An illustrative description of the plus addresses modal" translateable="false" formatter_data="android_java">
+    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_DESCRIPTION" desc="An illustrative description of the plus addresses modal" translateable="false">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
     </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_CANCEL_TEXT" desc="Cancel button text for the experimental enterprise plus addresses feature modal" translateable="false" formatter_data="android_java">
+    <message name="IDS_PLUS_ADDRESS_MODAL_CANCEL_TEXT" desc="Cancel button text for the experimental enterprise plus addresses feature modal" translateable="false">
       Dolor
     </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_OK_TEXT" desc="Ok button text for the experimental enterprise plus addresses feature modal" translateable="false" formatter_data="android_java">
+    <message name="IDS_PLUS_ADDRESS_MODAL_OK_TEXT" desc="Ok button text for the experimental enterprise plus addresses feature modal" translateable="false">
       Sit
+    </message>
+
+    <!-- Responsive Toolbar -->
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_DOWNLOADS" desc="Overflow menu item text of download button">
+      Downloads
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_EXTENSIONS" desc="Overflow menu item text of extensions button">
+      Extensions
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_FORWARD" desc="Overflow menu item text of forward button">
+      Forward
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_HOME" desc="Text of overflow menu item of home button">
+      Home
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_LABS" desc="Text of overflow menu item of labs button">
+      Labs
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_MEDIA_CONTROLS" desc="Text of overflow menu item of media controls">
+      Media controls
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_SIDE_PANEL" desc="Text of overflow menu item of side panel button">
+      Open side panel
+    </message>
+
+    <!-- Promise icon status labels. -->
+    <message name="IDS_PROMISE_STATUS_WAITING" desc="Text label for a promise icon in the Launcher or Shelf to indicate that the app is pending installation">
+      waiting...
+    </message>
+    <message name="IDS_PROMISE_STATUS_INSTALLING" desc="Text label for a promise icon in the Launcher or Shelf to indicate that the app is currently downloading or installing">
+      installing...
     </message>
   </messages>
 </release>

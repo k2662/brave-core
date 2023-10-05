@@ -1103,9 +1103,6 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="is_win or is_macosx or is_linux">
       </if>
 
-    <if expr="is_win">
-      </if>
-
     <if expr="is_android">
         </if>
 

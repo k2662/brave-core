@@ -49,7 +49,6 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       article.origin = article_raw->origin;
       article.publish_time = base::Time::FromJsTime(article_raw->publish_time);
       article.score = article_raw->score;
-
       articles[article_raw->topic_index].push_back(std::move(article));
     }
   } else {

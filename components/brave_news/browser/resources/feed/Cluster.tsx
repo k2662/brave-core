@@ -28,7 +28,7 @@ export default function Cluster({ info }: Props) {
     </MetaInfoContainer>
     {info.articles.map((a, i) => {
       const info: any = a.article || a.hero
-      return <Article key={i} info={info} hideChannel />
+      return <Article key={i} info={info} hideChannel={info.type === "channel"} />
     })}
   </Container>
 }

@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/api/topics.h"
@@ -46,7 +47,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
         article.img = GURL(article_raw->img.value());
       }
       article.origin = article_raw->origin;
-      //   article.publish_time = article_raw->publish_time;
+      article.publish_time = base::Time::FromJsTime(article_raw->publish_time);
       article.score = article_raw->score;
 
       articles[article_raw->topic_index].push_back(std::move(article));
@@ -70,7 +71,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       topic.overall_score = topic_raw->overall_score;
       topic.most_popular_query = topic_raw->most_popular_query;
       topic.queries = topic_raw->queries;
-      //   topic.timestamp = topic_raw->timestamp;
+      topic.timestamp = base::Time::FromJsTime(topic_raw->timestamp);
 
       // There should only be one topic for a set of topic_articles.
       auto it = articles.find(topic_raw->topic_index);

@@ -17,6 +17,7 @@ namespace topics {
     DOMString? img;
     DOMString publisher_name;
     double score;
+    double publish_time;
     DOMString category;
     DOMString origin;
   };
@@ -29,7 +30,9 @@ namespace topics {
     DOMString claude_title_short;
     DOMString most_popular_query;
     DOMString[] queries;
-    // long timestamp;
+
+    double timestamp;
+
     double overall_score;
     double breaking_score;
   };

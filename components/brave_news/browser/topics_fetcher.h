@@ -30,7 +30,7 @@ struct TopicArticle {
   GURL url;
   GURL img;
   std::string publisher_name;
-  uint64_t publish_time;
+  base::Time publish_time;
   double score;
   std::string category;
   std::string origin;
@@ -48,7 +48,7 @@ struct Topic {
   std::string claude_title_short;
   std::string most_popular_query;
   std::vector<std::string> queries;
-  uint64_t timestamp;
+  base::Time timestamp;
   double overall_score;
   double breaking_score;
 

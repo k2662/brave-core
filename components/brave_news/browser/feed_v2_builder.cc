@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <iterator>
 #include <string>
 #include <tuple>
@@ -333,6 +334,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
   topics.erase(topics.begin());
   result->id = topic.title;
 
+  uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
   for (const auto& article : topic.articles) {
     auto item = mojom::FeedItemMetadata::New();
     auto id_it = base::ranges::find_if(publishers, [&article](const auto& p) {
@@ -350,11 +352,45 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
     item->image = mojom::Image::NewImageUrl(article.img);
     result->articles.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
+
+    // For now, we truncate at |max_articles|. In future we may want to include
+    // more articles here and have the option to show more in the front end.
+    if (result->articles.size() >= max_articles) {
+      break;
+    }
   }
 
   std::vector<mojom::FeedItemV2Ptr> items;
   items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
   return items;
+}
+
+std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
+    std::vector<Topic>& topics,
+    const Publishers& publishers,
+    ArticleInfos& articles,
+    std::vector<std::string>& channels,
+    const std::string& locale) {
+  // If we have no channels, and no topics there's nothing we can do here.
+  if (channels.empty() && topics.empty()) {
+    DVLOG(1) << "Step 4: Nothing (no subscribed channels or unshown topics)";
+    return {};
+  }
+
+  auto generate_channel =
+      (!channels.empty() &&
+       base::RandDouble() < features::kBraveNewsCategoryTopicRatio.Get()) ||
+      topics.empty();
+
+  if (generate_channel) {
+    auto channel = PickRandom(channels);
+    DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
+    return GenerateChannelBlock(articles, publishers, PickRandom(channels),
+                                locale);
+  } else {
+    DVLOG(1) << "Step: Cluster Block (topic)";
+    return GenerateTopicBlock(topics, publishers);
+  }
 }
 
 // Generates a "Special Block" this will be one of the following:
@@ -584,17 +620,9 @@ void FeedV2Builder::BuildFeedFromArticles() {
       if (TossCoin()) {
         DVLOG(1) << "Step 4: Standard Block";
         items = GenerateBlock(articles);
-      } else if (!subscribed_channels.empty()) {
-        // If we have any subscribed channels, display a channel cluster.
-        // TODO(fallaciousreasoning): When we have topic support, add them here
-        // too.
-        auto channel = PickRandom(subscribed_channels);
-        DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
-        items = TossCoin() ? GenerateChannelBlock(articles, publishers, channel,
-                                                  locale)
-                           : GenerateTopicBlock(topics, publishers);
       } else {
-        DVLOG(1) << "Step 4: Nothing (no subscribed channels)";
+        items = GenerateClusterBlock(topics, publishers, articles,
+                                     subscribed_channels, locale);
       }
     } else if (iteration_type == 2) {
       // Step 5: Optional special card

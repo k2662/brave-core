@@ -9,7 +9,7 @@
 
 #include "base/containers/contains.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"

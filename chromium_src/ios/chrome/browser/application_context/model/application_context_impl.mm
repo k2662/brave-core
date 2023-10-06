@@ -38,7 +38,7 @@
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/metrics/ios_chrome_metrics_services_manager_client.h"
 #include "ios/chrome/browser/policy/browser_policy_connector_ios.h"
-#include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
+#include "ios/chrome/browser/prefs/model/ios_chrome_pref_service_factory.h"
 #include "ios/chrome/browser/push_notification/push_notification_service.h"
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"

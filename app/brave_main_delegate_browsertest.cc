@@ -6,7 +6,7 @@
 #include "base/feature_list.h"
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
-#include "chrome/browser/apps/intent_helper/intent_picker_features.h"
+#include "chrome/browser/apps/link_capturing/link_capturing_features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/companion/visual_search/features.h"
@@ -116,6 +116,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &android_webview::features::kWebViewServerSideSampling,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    &apps::features::kDesktopPWAsLinkCapturing,
+#endif
     &apps::features::kLinkCapturingInfoBar,
     &attribution_reporting::features::
         kAttributionReportingNullAggregatableReports,
@@ -185,9 +188,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kChromeRefresh2023,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
-#endif
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-    &features::kDesktopPWAsLinkCapturing,
 #endif
     &features::kDigitalGoodsApi,
     &features::kDIPS,

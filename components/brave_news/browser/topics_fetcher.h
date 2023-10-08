@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_TOPICS_FETCHER_H_
 
 #include <vector>
-#include "base/allocator/partition_allocator/pointers/raw_ref.h"
+
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"

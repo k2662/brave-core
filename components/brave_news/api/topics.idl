@@ -22,6 +22,7 @@ namespace topics {
     DOMString origin;
   };
 
+  // A dictionary with fields representing a topic.
   dictionary Topic {
     long topic_index;
 

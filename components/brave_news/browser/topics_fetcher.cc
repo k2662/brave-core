@@ -12,7 +12,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/api/topics.h"
@@ -32,10 +31,10 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
     for (const auto& a : *list) {
       auto article_raw = api::topics::TopicArticle::FromValue(a);
       if (!article_raw.has_value()) {
-        LOG(ERROR) << "Failed to parse article: " << article_raw.error();
-        LOG(ERROR) << "JSON: " << a;
+        LOG(ERROR) << "Failed to parse topic article: " << article_raw.error();
         continue;
       }
+
       TopicArticle article;
       article.title = article_raw->title;
       article.category = article_raw->category;
@@ -72,7 +71,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       topic.queries = topic_raw->queries;
       topic.timestamp = base::Time::FromJsTime(topic_raw->timestamp);
 
-      // There should only be one topic for a set of topic_articles.
+      // Set the articles belonging to this topic.
       auto it = articles.find(topic_raw->topic_index);
       if (it != articles.end()) {
         topic.articles = std::move(it->second);
@@ -81,7 +80,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
       result.push_back(std::move(topic));
     }
   } else {
-    LOG(ERROR) << "topics response was not a list: " << topics_json;
+    LOG(ERROR) << "topics response was not a list!";
   }
 
   return result;

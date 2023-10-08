@@ -46,6 +46,7 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
         article.img = GURL(article_raw->img.value());
       }
       article.origin = article_raw->origin;
+      article.publisher_name = article_raw->publisher_name;
       article.publish_time = base::Time::FromJsTime(article_raw->publish_time);
       article.score = article_raw->score;
       articles[article_raw->topic_index].push_back(std::move(article));

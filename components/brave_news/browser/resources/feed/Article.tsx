@@ -34,7 +34,7 @@ const ArticleImage = styled.img`
 export const openArticle = (article: FeedItemMetadata) => window.open(article.url.url, '_blank', 'noopener noreferrer')
 
 export default function Article({ info, hideChannel }: Props) {
-  const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, { useCache: true })
+  const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, { useCache: true })
 
   return <Container onClick={() => openArticle(info.data)} ref={setElementRef}>
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />

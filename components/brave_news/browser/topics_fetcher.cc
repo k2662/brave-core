@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 
+#include <string>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -124,8 +125,11 @@ void TopicsFetcher::FetchTopics(FetchState state) {
                          ".", state.locale, ".json"}));
   api_request_helper_.Request(
       "GET", url, "", "",
-      base::BindOnce(&TopicsFetcher::OnFetchedTopics, base::Unretained(this),
-                     std::move(state)));
+      base::BindOnce(
+          &TopicsFetcher::OnFetchedTopics,
+          // Note: Unretained is safe here, because this class owns the
+          // |api_request_helper_|, which uses WeakPtr internally.
+          base::Unretained(this), std::move(state)));
 }
 
 void TopicsFetcher::OnFetchedTopics(
@@ -147,8 +151,11 @@ void TopicsFetcher::FetchTopicArticles(FetchState state) {
                          kTopicArticlesEndpoint, ".", state.locale, ".json"}));
   api_request_helper_.Request(
       "GET", url, "", "",
-      base::BindOnce(&TopicsFetcher::OnFetchedTopicArticles,
-                     base::Unretained(this), std::move(state)));
+      base::BindOnce(
+          &TopicsFetcher::OnFetchedTopicArticles,
+          // Note: Unretained is safe here, because this class owns the
+          // |api_request_helper_|, which uses WeakPtr internally.
+          base::Unretained(this), std::move(state)));
 }
 
 void TopicsFetcher::OnFetchedTopicArticles(

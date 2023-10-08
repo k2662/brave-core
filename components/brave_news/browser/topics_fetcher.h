@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_TOPICS_FETCHER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_TOPICS_FETCHER_H_
 
+#include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
-#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 

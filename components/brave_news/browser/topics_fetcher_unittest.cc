@@ -4,15 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_news/browser/topics_fetcher.h"
+
+#include <utility>
 #include <vector>
 
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
-#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -313,8 +313,7 @@ TEST_F(TopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
 
 TEST_F(TopicsFetcherTest, TopicsWithInvalidArticles) {
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
-  url_loader_factory().AddResponse(kTopicsNewsUrl, "foo",
-                                   net::HTTP_OK);
+  url_loader_factory().AddResponse(kTopicsNewsUrl, "foo", net::HTTP_OK);
   // Should manage to parse the topics out but not have any articles.
   auto topics = GetTopics();
   EXPECT_EQ(3u, topics.size());

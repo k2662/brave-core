@@ -70,8 +70,8 @@ class TopicsFetcher {
   struct FetchState {
     std::string locale;
     TopicsCallback callback;
-    base::Value topics_json;
-    base::Value topic_articles_json;
+    api_request_helper::APIRequestResult topics_result;
+    api_request_helper::APIRequestResult topic_articles_result;
 
     FetchState(std::string locale, TopicsCallback callback);
     ~FetchState();

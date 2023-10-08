@@ -136,8 +136,8 @@ void TopicsFetcher::OnFetchedTopics(
     std::move(state.callback).Run({});
     return;
   }
-  // TODO: Don't clone
-  state.topics_json = result.value_body().Clone();
+
+  state.topics_result = std::move(result);
   FetchTopicArticles(std::move(state));
 }
 
@@ -159,10 +159,11 @@ void TopicsFetcher::OnFetchedTopicArticles(
     std::move(state.callback).Run({});
     return;
   }
-  // TODO: Don't clone
-  state.topic_articles_json = result.value_body().Clone();
 
-  auto topics = ParseTopics(state.topics_json, state.topic_articles_json);
+  state.topic_articles_result = std::move(result);
+
+  auto topics = ParseTopics(state.topics_result.value_body(),
+                            state.topic_articles_result.value_body());
   std::move(state.callback).Run(std::move(topics));
 }
 

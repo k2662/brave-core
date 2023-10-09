@@ -5,11 +5,10 @@
 
 import * as React from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
-import { useNewTabPref } from '../../../../hooks/usePref'
-import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled } from '../../../../../brave_news/browser/resources/shared/api'
-import Modal from './Modal'
-import { PublishersCachingWrapper } from '../../../../api/brave_news/publishersCache'
-import { ChannelsCachingWrapper } from '../../../../api/brave_news/channelsCache'
+import { useNewTabPref } from '../../../../brave_new_tab_ui/hooks/usePref'
+import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled } from './api'
+import { PublishersCachingWrapper } from './publishersCache'
+import { ChannelsCachingWrapper } from './channelsCache'
 
 // Leave possibility for more pages open.
 type NewsPage = null
@@ -47,16 +46,16 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   subscribedPublisherIds: [],
   channels: {},
   suggestedPublisherIds: [],
-  updateSuggestedPublisherIds: () => {},
+  updateSuggestedPublisherIds: () => { },
   isOptInPrefEnabled: undefined,
   isShowOnNTPPrefEnabled: undefined,
-  toggleBraveNewsOnNTP: (enabled: boolean) => {}
+  toggleBraveNewsOnNTP: (enabled: boolean) => { }
 })
 
 const publishersCache = new PublishersCachingWrapper()
 const channelsCache = new ChannelsCachingWrapper()
 
-export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
+export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
@@ -135,7 +134,6 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
-    <Modal />
   </BraveNewsContext.Provider>
 }
 

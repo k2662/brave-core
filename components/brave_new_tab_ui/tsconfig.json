@@ -5,5 +5,5 @@
     "**/*.tsx",
     "**/*.d.ts",
     "../definitions/*.d.ts"
-  ]
+, "../brave_news/browser/resources/shared/channelsCache.ts", "../brave_news/browser/resources/shared/Context.tsx"  ]
 }

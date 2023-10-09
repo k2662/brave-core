@@ -71,7 +71,7 @@ constexpr char kTopicsNewsUrl[] =
 constexpr char kTopicsNewsResponse[] = R"([
   {
     "topic_index": 0,
-    "title": "Hamas’s Control of Gaza Must End Now",
+    "title": "Hamas's Control of Gaza Must End Now",
     "description": "Peace can soon follow, as it did after the Yom Kippur War.",
     "url": "https://www.nytimes.com/2023/10/07/opinion/gaza-israel-hamas.html",
     "img": "https://static01.nyt.com/images/2023/10/09/multimedia/07stephens1-kcbt/07stephens1-kcbt-facebookJumbo.jpg",
@@ -95,7 +95,7 @@ constexpr char kTopicsNewsResponse[] = R"([
   },
   {
     "topic_index": 0,
-    "title": "Israel’s Defense Failures May Change Strategy Toward Hamas and Gaza",
+    "title": "Israel's Defense Failures May Change Strategy Toward Hamas and Gaza",
     "description": "The broad attack by Palestinian militants, which Hamas viewed as mostly successful, revealed some significant failures.",
     "url": "https://www.nytimes.com/2023/10/07/world/middleeast/israels-defense-failures-may-change-strategy-toward-hamas-and-gaza.html",
     "img": "https://static01.nyt.com/images/2023/10/07/multimedia/07israel-gaza-security-analysis-02-ctlb/07israel-gaza-security-analysis-02-ctlb-facebookJumbo.jpg",
@@ -155,7 +155,7 @@ constexpr char kTopicsNewsResponse[] = R"([
   },
   {
     "topic_index": 0,
-    "title": "Hamas says it has seized ‘dozens’ of hostages from Israel as video appears to show civilians taken to Gaza",
+    "title": "Hamas says it has seized 'dozens' of hostages from Israel as video appears to show civilians taken to Gaza",
     "description": "Hostages appear to include military personnel and civilians ",
     "url": "https://www.independent.co.uk/news/world/middle-east/israel-palestine-hamas-war-hostage-b2425961.html",
     "img": "https://static.independent.co.uk/2023/10/07/19/28a6a9b03db144d88e53d14e5541a9f3.jpg?quality=75&width=1200&auto=webp",
@@ -179,8 +179,8 @@ constexpr char kTopicsNewsResponse[] = R"([
   },
   {
     "topic_index": 0,
-    "title": "China calls for ‘calm and restraint’ as Israel declares war after deadly Hamas raid",
-    "description": "China is ‘deeply concerned about the escalation of tension and violence in Palestine and Israel’, foreign ministry says in ceasefire call.",
+    "title": "China calls for 'calm and restraint' as Israel declares war after deadly Hamas raid",
+    "description": "China is 'deeply concerned about the escalation of tension and violence in Palestine and Israel', foreign ministry says in ceasefire call.",
     "url": "https://www.scmp.com/news/china/diplomacy/article/3237203/china-calls-calm-and-restraint-israel-declares-war-after-deadly-hamas-raid?utm_source=rss_feed",
     "img": "https://cdn.i-scmp.com/sites/default/files/styles/1280x720/public/d8/images/canvas/2023/10/08/dccb5913-3c14-4179-9d69-8039af332fd1_66af8770.jpg?itok=Jm6fY1Tv",
     "publisher_name": "South China Morning Post",

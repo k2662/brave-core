@@ -6,6 +6,7 @@
 import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
+import { defaultState } from '../../../storage/new_tab_storage'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
@@ -36,7 +37,7 @@ type PageProps = {
   showBrandedWallpaper: boolean
 } & HasImageProps
 
-function getItemRowCount (p: PageProps): number {
+function getItemRowCount(p: PageProps): number {
   let right = (p.showClock ? 1 : 0) + (p.showCryptoContent ? 2 : 0)
   let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
   // Has space for branded logo to sit next to something on right?
@@ -46,7 +47,7 @@ function getItemRowCount (p: PageProps): number {
   return Math.max(left, right) + 1 // extra 1 for footer
 }
 
-const StyledPage = styled('div')<PageProps>`
+const StyledPage = styled('div') <PageProps>`
   /* Increase the explicit row count when adding new widgets
      so that the footer goes in the correct location always,
      yet can still merge upwards to previous rows. */
@@ -198,11 +199,11 @@ export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidd
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
     ${(p) =>
-      p.otherWidgetsHidden
-        ? css`
+    p.otherWidgetsHidden
+      ? css`
             flex-grow: 2;
           `
-        : css`
+      : css`
             display: none
           `}
   }
@@ -269,7 +270,7 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
-export const GridItemNavigationBraveNews = styled('div')<{}>`
+export const GridItemNavigationBraveNews = styled('div') <{}>`
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -281,7 +282,7 @@ export const GridItemNavigationBraveNews = styled('div')<{}>`
   }
 `
 
-export const Footer = styled('footer')<{}>`
+export const Footer = styled('footer') <{}>`
   /* Child items are primary Grid items and can slot in to free spaces,
      so this element doesn't do anything on wider viewport widths. */
   display: contents;
@@ -309,7 +310,7 @@ export const FooterContent = styled('div')`
   }
 `
 
-function getPageBackground (p: HasImageProps) {
+function getPageBackground(p: HasImageProps) {
   // Page background is duplicated since a backdrop-filter's
   // ancestor which has blur must also have background.
   // In our case, Widgets are the backdrop-filter element
@@ -347,11 +348,12 @@ function getPageBackground (p: HasImageProps) {
         background-attachment: fixed;
       `};
       background-position: center center;
+      ${defaultState.featureFlagBraveNewsFeedV2Enabled && 'filter: blur(calc(var(--ntp-extra-content-effect-multiplier) * 64px))'}
     }
   `
 }
 
-export const App = styled('div')<AppProps & HasImageProps>`
+export const App = styled('div') <AppProps & HasImageProps>`
   --bg-opacity: ${p => p.imageHasLoaded ? 1 : 0};
   position: relative;
   padding-top: var(--ntp-fixed-content-height, "0px");
@@ -364,7 +366,7 @@ export const App = styled('div')<AppProps & HasImageProps>`
   ${getPageBackground}
 `
 
-export const Link = styled('a')<{}>`
+export const Link = styled('a') <{}>`
   text-decoration: none;
   transition: color 0.15s ease, filter 0.15s ease;
   color: rgba(255, 255, 255, 0.8);
@@ -374,7 +376,7 @@ export const Link = styled('a')<{}>`
   }
 `
 
-export const Label = styled('span')<{}>`
+export const Label = styled('span') <{}>`
   text-decoration: none;
   transition: color 0.15s ease, filter 0.15s ease;
   color: rgba(255, 255, 255, 0.8);
@@ -384,7 +386,7 @@ export const Label = styled('span')<{}>`
   }
 `
 
-export const PhotoName = styled('div')<{}>`
+export const PhotoName = styled('div') <{}>`
   align-self: flex-end;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -394,7 +396,7 @@ export const PhotoName = styled('div')<{}>`
   white-space: nowrap;
 `
 
-export const Navigation = styled('nav')<{}>`
+export const Navigation = styled('nav') <{}>`
   align-self: flex-end;
   display: flex;
   justify-content: flex-end;
@@ -407,7 +409,7 @@ interface IconButtonProps {
   isClickMenu?: boolean
 }
 
-export const IconLink = styled('a')<{}>`
+export const IconLink = styled('a') <{}>`
   display: block;
   width: 24px;
   height: 24px;
@@ -422,7 +424,7 @@ export const IconLink = styled('a')<{}>`
   }
 `
 
-export const IconButton = styled('button')<IconButtonProps>`
+export const IconButton = styled('button') <IconButtonProps>`
   pointer-events: ${p => p.clickDisabled && 'none'};
   display: flex;
   width: 24px;
@@ -453,7 +455,7 @@ interface IconButtonSideTextProps {
 // element can be a <button> and we can use :focus-visible
 // and not :focus-within which cannot be combined with :focus-visble.
 
-export const IconButtonSideText = styled('label')<IconButtonSideTextProps>`
+export const IconButtonSideText = styled('label') <IconButtonSideTextProps>`
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
@@ -483,7 +485,7 @@ interface IconButtonContainerProps {
   textDirection: string
 }
 
-export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
+export const IconButtonContainer = styled('div') <IconButtonContainerProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;

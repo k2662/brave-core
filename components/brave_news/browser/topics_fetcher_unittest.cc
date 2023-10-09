@@ -240,7 +240,8 @@ TEST_F(TopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
                                    net::HTTP_OK);
   auto topics = GetTopics();
 
-  EXPECT_EQ(3u, topics.size());
+  // Note: Topics with no articles are filtered out.
+  EXPECT_EQ(2u, topics.size());
 
   auto israel = topics[0];
   EXPECT_EQ(
@@ -282,10 +283,6 @@ TEST_F(TopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
   EXPECT_EQ(1.9549199155, afghanistan_article.score);
   EXPECT_EQ("World News", afghanistan_article.category);
   EXPECT_EQ("news", afghanistan_article.origin);
-
-  auto ukraine = topics[2];
-  EXPECT_EQ("War continues", ukraine.claude_title_short);
-  EXPECT_EQ(0u, ukraine.articles.size());
 }
 
 TEST_F(TopicsFetcherTest, NoResponseNoTopics) {
@@ -314,13 +311,7 @@ TEST_F(TopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
 TEST_F(TopicsFetcherTest, TopicsWithInvalidArticles) {
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "foo", net::HTTP_OK);
-  // Should manage to parse the topics out but not have any articles.
-  auto topics = GetTopics();
-  EXPECT_EQ(3u, topics.size());
-
-  for (const auto& topic : topics) {
-    EXPECT_EQ(0u, topic.articles.size());
-  }
+  EXPECT_EQ(0u, GetTopics().size());
 }
 
 }  // namespace brave_news

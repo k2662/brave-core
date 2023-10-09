@@ -79,6 +79,13 @@ std::vector<Topic> ParseTopics(const base::Value& topics_json,
         topic.articles = std::move(it->second);
       }
 
+      // Skip topic if it has no articles, as it's not useful.
+      if (topic.articles.size() == 0) {
+        LOG(ERROR) << "Found topic with no articles: " << topic.title
+                   << ". This is likely a backend error";
+        continue;
+      }
+
       result.push_back(std::move(topic));
     }
   } else {

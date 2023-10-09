@@ -311,8 +311,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   }
 
   std::vector<mojom::FeedItemV2Ptr> result;
-  result.push_back(mojom::FeedItemV2::NewCluster(
-      mojom::Cluster::New("channel", channel, std::move(article_elements))));
+  result.push_back(mojom::FeedItemV2::NewCluster(mojom::Cluster::New(
+      mojom::ClusterType::CHANNEL, channel, std::move(article_elements))));
   return result;
 }
 
@@ -324,7 +324,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
   }
   DVLOG(1) << __FUNCTION__;
   auto result = mojom::Cluster::New();
-  result->type = "topic";
+  result->type = mojom::ClusterType::TOPIC;
 
   auto topic = std::move(topics[0]);
   topics.erase(topics.begin());
@@ -549,10 +549,9 @@ void FeedV2Builder::GetTopics() {
 }
 
 void FeedV2Builder::OnGotTopics(std::vector<Topic> topics) {
-  DVLOG(1) << __FUNCTION__;
+  DVLOG(1) << __FUNCTION__ << " (topic count: " << topics.size() << ")";
   topics_ = std::move(topics);
 
-  LOG(ERROR) << "Topic Count: " << topics_.size();
   BuildFeedFromArticles();
 }
 

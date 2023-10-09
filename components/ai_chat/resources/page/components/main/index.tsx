@@ -22,6 +22,7 @@ import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import ErrorContextLimitReaching from '../error_context_limit_reaching'
+import PromptLongArticle from '../prompt_long_article'
 
 function Main() {
   const context = React.useContext(DataContext)
@@ -115,6 +116,11 @@ function Main() {
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
+        )}
+        {context.isArticleLong && (
+          <div className={styles.promptContainer}>
+            <PromptLongArticle />
+          </div>
         )}
         {
           shouldShowPremiumSuggestionForModel && (

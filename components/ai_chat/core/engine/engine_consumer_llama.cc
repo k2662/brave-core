@@ -262,6 +262,14 @@ void EngineConsumerLlamaRemote::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
+int EngineConsumerLlamaRemote::GetArticleCharacterLimit() {
+  // tokens + max_new_tokens must be <= 4096 (llama2)
+  // 8092 chars, ~3,098 toks reserved for article
+  // 1k chars, ~380 toks reserved for prompt
+  // 400 toks reserved for max_tokens_to_sample
+  return 8092;
+}
+
 void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,

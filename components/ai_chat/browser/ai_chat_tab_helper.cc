@@ -286,10 +286,10 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     return;
   }
 
-  // tokens + max_new_tokens must be <= 4096 (llama2)
-  // 8092 chars, ~3,098 tokens (reserved for article)
-  // 1k chars, ~380 tokens (reserved for prompt)
-  contents_text = contents_text.substr(0, 8092);
+  int article_char_limit = engine_->GetArticleCharacterLimit();
+  is_article_text_long_ =
+      static_cast<int>(contents_text.length()) > article_char_limit;
+  contents_text = contents_text.substr(0, article_char_limit);
 
   is_video_ = is_video;
   article_text_ = contents_text;
@@ -474,6 +474,12 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
 
+  if (base::Contains(question_part, "Summarize")) {
+    for (auto& obs : observers_) {
+      obs.OnSummarize(is_article_text_long_);
+    }
+  }
+
   is_request_in_progress_ = true;
 }
 
@@ -628,6 +634,10 @@ void AIChatTabHelper::SetAPIError(const mojom::APIError& error) {
 
 void AIChatTabHelper::ResetAPIError() {
   SetAPIError(mojom::APIError::None);
+}
+
+bool AIChatTabHelper::IsPageContentsLong() {
+  return is_article_text_long_;
 }
 
 void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {

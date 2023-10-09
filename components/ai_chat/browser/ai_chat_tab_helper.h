@@ -55,6 +55,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
         mojom::AutoGenerateQuestionsPref auto_generate) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent() {}
+    virtual void OnSummarize(bool is_page_contents_long) {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -88,6 +89,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
   void ResetAPIError();
+  bool IsPageContentsLong();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -143,6 +145,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::string model_key_;
   std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
+  bool is_article_text_long_;
   bool is_conversation_active_ = false;
   bool is_page_text_fetch_in_progress_ = false;
   bool is_request_in_progress_ = false;

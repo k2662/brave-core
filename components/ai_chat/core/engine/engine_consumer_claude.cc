@@ -144,6 +144,11 @@ void EngineConsumerClaudeRemote::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
+int EngineConsumerClaudeRemote::GetArticleCharacterLimit() {
+  //  limit is: 100k tokens / ~75k words
+  return 15000;
+}
+
 void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,

@@ -35,6 +35,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
   const [isPremiumUser] = React.useState(true)
   const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPremiumPrompt"))
+  const [isArticleLong, setIsArticleLong] = React.useState(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -112,6 +113,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     setHasUserDissmisedPremiumPrompt(true)
   }
 
+  const dismissArticleLongPrompt = () => {
+    setIsArticleLong(false)
+  }
+
   const initialiseForTargetTab = () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -150,6 +155,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
+    getPageHandlerInstance().callbackRouter.onSummarize.addListener(setIsArticleLong)
   }, [])
 
   const store = {
@@ -169,11 +175,13 @@ function DataContextProvider (props: DataContextProviderProps) {
     shouldDisableUserInput,
     isPremiumUser,
     hasUserDissmisedPremiumPrompt,
+    isArticleLong,
     setCurrentModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
-    dismissPremiumPrompt
+    dismissPremiumPrompt,
+    dismissArticleLongPrompt
   }
 
   return (

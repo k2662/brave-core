@@ -56,6 +56,9 @@ class EngineConsumer {
   virtual void SanitizeInput(std::string& input) = 0;
 
   virtual void ClearAllQueries() = 0;
+
+  // How many characters to allow for an article
+  virtual int GetArticleCharacterLimit() = 0;
 };
 
 }  // namespace ai_chat

@@ -342,6 +342,12 @@ void AIChatUIPageHandler::OnPageHasContent() {
   }
 }
 
+void AIChatUIPageHandler::OnSummarize(bool is_page_contents_long) {
+  if (page_.is_bound() && active_chat_tab_helper_) {
+    page_->OnSummarize(active_chat_tab_helper_->IsPageContentsLong());
+  }
+}
+
 void AIChatUIPageHandler::GetFaviconImageData(
     GetFaviconImageDataCallback callback) {
   if (!active_chat_tab_helper_) {

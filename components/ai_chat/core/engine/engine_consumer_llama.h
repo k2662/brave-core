@@ -51,6 +51,7 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
+  int GetArticleCharacterLimit() override;
 
  private:
   void OnGenerateQuestionSuggestionsResponse(

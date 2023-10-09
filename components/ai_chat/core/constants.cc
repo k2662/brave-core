@@ -69,7 +69,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"feedbackError", IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR},
       {"ratingError", IDS_CHAT_UI_RATING_ERROR},
       {"clearChatButtonLabel", IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL},
-      {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING}};
+      {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
+      {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
+      {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING}};
 
   return kLocalizedStrings;
 }

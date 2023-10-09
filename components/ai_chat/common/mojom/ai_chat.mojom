@@ -124,4 +124,5 @@ interface ChatUIPage {
       array<string> questions, bool has_generated, AutoGenerateQuestionsPref auto_generate);
   OnSiteInfoChanged(SiteInfo? info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
+  OnSummarize(bool is_page_contents_long);
 };

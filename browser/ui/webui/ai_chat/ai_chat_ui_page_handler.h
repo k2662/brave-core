@@ -92,6 +92,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojom::AutoGenerateQuestionsPref auto_generate) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent() override;
+  void OnSummarize(bool is_page_contents_long) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
   absl::optional<mojom::SiteInfo> BuildSiteInfo();

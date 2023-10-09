@@ -1427,144 +1427,38 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // Not needed on iOS because ads do not show unless you are viewing a tab
 }
 
-- (void)setBooleanPref:(const std::string&)path value:(const bool)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
+- (void)setProfilePref:(const std::string&)path value:(base::Value)value {
+  std::string json;
+  if (base::JSONWriter::Write(value, &json)) {
+    const auto key = base::SysUTF8ToNSString(path);
+    self.prefs[key] = base::SysUTF8ToNSString(json);
+    [self savePref:key];
+  }
 }
 
-- (bool)getBooleanPref:(const std::string&)path {
+- (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] boolValue];
-}
+  const auto json = (NSString*)self.prefs[key];
+  if (!json) {
+    return absl::nullopt;
+  }
 
-- (void)setIntegerPref:(const std::string&)path value:(const int)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (int)getIntegerPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] intValue];
-}
-
-- (void)setDoublePref:(const std::string&)path value:(const double)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (double)getDoublePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] doubleValue];
-}
-
-- (void)setStringPref:(const std::string&)path value:(const std::string&)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = base::SysUTF8ToNSString(value);
-  [self savePref:key];
-}
-
-- (std::string)getStringPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto value = (NSString*)self.prefs[key];
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(base::SysNSStringToUTF8(json));
   if (!value) {
-    return "";
-  }
-  return value.UTF8String;
-}
-
-- (void)setInt64Pref:(const std::string&)path value:(const int64_t)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (int64_t)getInt64Pref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] longLongValue];
-}
-
-- (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (uint64_t)getUint64Pref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] unsignedLongLongValue];
-}
-
-- (void)setTimePref:(const std::string&)path value:(const base::Time)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value.ToDoubleT());
-  [self savePref:key];
-}
-
-- (base::Time)getTimePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
-}
-
-- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePref:key];
-  }
-}
-
-- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
     return absl::nullopt;
   }
 
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value || !value->is_dict()) {
-    return absl::nullopt;
-  }
-
-  return value->GetDict().Clone();
+  return value->Clone();
 }
 
-- (void)setListPref:(const std::string&)path value:(base::Value::List)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePref:key];
-  }
-}
-
-- (absl::optional<base::Value::List>)getListPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    return absl::nullopt;
-  }
-
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value || !value->is_list()) {
-    return absl::nullopt;
-  }
-
-  return value->GetList().Clone();
-}
-
-- (void)clearPref:(const std::string&)path {
+- (void)clearProfilePref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   [self.prefs removeObjectForKey:key];
   [self savePref:key];
 }
 
-- (bool)hasPrefPath:(const std::string&)path {
+- (bool)hasProfilePrefPath:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   return [self.prefs objectForKey:key] != nil;
 }
@@ -1579,6 +1473,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 
   return absl::nullopt;
+}
+
+- (void)clearLocalStatePref:(const std::string&)path {
+  // Not needed on iOS
+}
+
+- (bool)hasLocalStatePrefPath:(const std::string&)path {
+  // Not needed on iOS
+  return false;
 }
 
 #pragma mark - Ads Resources Paths

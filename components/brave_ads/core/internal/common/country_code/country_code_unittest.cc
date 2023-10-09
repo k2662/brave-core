@@ -44,7 +44,7 @@ class BraveAdsCountryCodeTest : public UnitTestBase {
                              const std::string& subdivision_code) {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
+         {{net::HTTP_OK, test::BuildSubdivisionUrlResponseBody(
                              country_code, subdivision_code)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
@@ -68,7 +68,7 @@ TEST_F(BraveAdsCountryCodeTest, OnDidInitializeAds) {
 
 TEST_F(BraveAdsCountryCodeTest, PrefsNotEnabledOnDidInitializeAds) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
@@ -81,7 +81,7 @@ TEST_F(BraveAdsCountryCodeTest, PrefsNotEnabledOnDidInitializeAds) {
 
 TEST_F(BraveAdsCountryCodeTest, OnDidJoinBraveRewards) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
@@ -94,7 +94,7 @@ TEST_F(BraveAdsCountryCodeTest, OnDidJoinBraveRewards) {
 
 TEST_F(BraveAdsCountryCodeTest, OnDidChangePrefOutside) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   SetLocalStateStringPref(brave_l10n::prefs::kCountryCode, "CA");
 
@@ -107,7 +107,7 @@ TEST_F(BraveAdsCountryCodeTest, OnDidChangePrefOutside) {
 
 TEST_F(BraveAdsCountryCodeTest, PrefWasChangedBefore) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   SetLocalStateStringPref(brave_l10n::prefs::kCountryCode, "CA");
 
@@ -128,7 +128,7 @@ TEST_F(BraveAdsCountryCodeTest, RetryAfterInvalidUrlResponseStatusCode) {
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK,
-         BuildSubdivisionUrlResponseBodyForTesting(
+         test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

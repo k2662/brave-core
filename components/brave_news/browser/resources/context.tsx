@@ -9,7 +9,7 @@ import {
   Signal
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import * as React from 'react'
-import usePromise from '../../../brave_new_tab_ui/hooks/usePromise'
+import usePromise from '$web-common/usePromise'
 import { BraveNewsContextProvider } from './shared/Context';
 
 export interface InspectContext {

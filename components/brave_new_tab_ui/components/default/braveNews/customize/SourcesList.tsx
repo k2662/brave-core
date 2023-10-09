@@ -10,7 +10,7 @@ import { useBraveNews, useChannels } from '../../../../../brave_news/browser/res
 import Flex from '$web-common/Flex'
 import { FeedListEntry, ChannelListEntry } from './SourcesListEntry'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-import usePromise from '../../../../hooks/usePromise'
+import usePromise from '$web-common/usePromise'
 
 const Title = styled.span`
   font-size: 18px;

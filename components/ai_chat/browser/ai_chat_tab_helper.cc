@@ -474,7 +474,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
 
-  if (base::Contains(question_part, "Summarize")) {
+  if (is_suggested_question) {
     for (auto& obs : observers_) {
       obs.OnSummarize(is_article_text_long_);
     }

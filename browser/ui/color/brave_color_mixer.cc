@@ -7,6 +7,7 @@
 
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
@@ -420,6 +421,12 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
   tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
 
+  // "Hide" upstream's side panel top border by using the background color for
+  // the border.
+  if (base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+    mixer[kColorSidePanelContentAreaSeparator] = {kColorSidePanelBackground};
+  }
+
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::AddThemeColorMixer(provider, leo::Theme::kLight, key);
@@ -537,6 +544,12 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       GetToolbarInkDropColor(mixer)};
 
   tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
+
+  // "Hide" upstream's side panel top border by using the background color for
+  // the border.
+  if (base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+    mixer[kColorSidePanelContentAreaSeparator] = {kColorSidePanelBackground};
+  }
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {

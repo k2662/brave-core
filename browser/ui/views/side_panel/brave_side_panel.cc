@@ -7,7 +7,9 @@
 
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -29,6 +31,10 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
 
   OnSidePanelWidthChanged();
   AddObserver(this);
+
+  if (base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+    shadow_ = BraveContentsViewUtil::CreateShadow(this);
+  }
 }
 
 BraveSidePanel::~BraveSidePanel() {
@@ -49,6 +55,10 @@ bool BraveSidePanel::IsRightAligned() {
 }
 
 void BraveSidePanel::UpdateBorder() {
+  if (base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+    return;
+  }
+
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
     // Negative top border so panel is flush with main tab content

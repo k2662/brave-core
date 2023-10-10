@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -970,9 +971,11 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 
   new_tab_button_->FrameColorsChanged();
 
-  SetBorder(views::CreateSolidSidedBorder(
-      gfx::Insets().set_right(1),
-      cp->GetColor(kColorBraveVerticalTabSeparator)));
+  if (!base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+    SetBorder(views::CreateSolidSidedBorder(
+        gfx::Insets().set_right(1),
+        cp->GetColor(kColorBraveVerticalTabSeparator)));
+  }
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
@@ -1049,8 +1052,9 @@ void VerticalTabStripRegionView::OnBoundsChanged(
   }
 
 #if DCHECK_IS_ON()
+  // Note that `width` can be 1 during initialization when there is no border.
   if (auto width = GetContentsBounds().width();
-      width && !IsBrowserFullscren()) {
+      width > 1 && !IsBrowserFullscren()) {
     CHECK_GE(width, tabs::kVerticalTabMinWidth +
                         tabs::kMarginForVerticalTabContainers * 2);
   }

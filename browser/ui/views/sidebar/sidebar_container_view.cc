@@ -11,6 +11,7 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -21,7 +22,8 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
+#include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
@@ -299,8 +301,20 @@ void SidebarContainerView::Layout() {
   sidebar_control_view_->SetBounds(control_view_x, 0, control_view_width,
                                    height());
   if (side_panel_->GetVisible()) {
-    side_panel_->SetBounds(side_panel_x, 0, width() - control_view_width,
-                           height());
+    gfx::Rect side_panel_bounds(side_panel_x, 0, width() - control_view_width,
+                                height());
+
+    if (base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+      gfx::Insets padding = gfx::Insets(BraveContentsViewUtil::kMargin);
+      if (sidebar_on_left_) {
+        padding.set_right(0);
+      } else {
+        padding.set_left(0);
+      }
+      side_panel_bounds.Inset(padding);
+    }
+
+    side_panel_->SetBoundsRect(side_panel_bounds);
   }
 }
 
@@ -334,6 +348,9 @@ gfx::Size SidebarContainerView::CalculatePreferredSize() const {
 
   if (side_panel_->GetVisible()) {
     preferred_width += side_panel_->GetPreferredSize().width();
+    if (base::FeatureList::IsEnabled(features::kBravePaddedWebContent)) {
+      preferred_width += BraveContentsViewUtil::kMargin;
+    }
   }
 
   return {preferred_width, 0};
@@ -552,16 +569,15 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
     DVLOG(1) << __func__ << ": show with animation";
     if (show_side_panel) {
       // To show side panel with animation, we need to know exact fianl end
-      // width and BraveContentsLayoutManager only knows it because side panel's
+      // width and `BraveBrowserViewLayout` only knows it because side panel's
       // preferred size could be different with current width by resizing window
       // size. If window size doesn't have sufficent width for sidebar's
-      // preferred width, BraveContentsLayoutManager allocates more smaller
-      // width to it.
+      // preferred width, `BraveBrowserViewLayout` allocates more smaller width
+      // to it.
       auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
       const int target_sidebar_width =
-          static_cast<BraveContentsLayoutManager*>(
-              browser_view->contents_container()->GetLayoutManager())
-              ->CalculateTargetSideBarWidth();
+          static_cast<BraveBrowserViewLayout*>(browser_view->GetLayoutManager())
+              ->GetIdealSideBarWidth();
       animation_end_width_ =
           std::min(animation_end_width_, target_sidebar_width);
       side_panel_->set_fixed_contents_width(

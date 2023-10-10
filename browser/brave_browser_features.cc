@@ -29,4 +29,10 @@ BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
              "brave-override-download-danger-level",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Enables an updated browser view layout that adds a padding and shadow to the
+// main web content area.
+BASE_FEATURE(kBravePaddedWebContent,
+             "brave-padded-web-content",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features

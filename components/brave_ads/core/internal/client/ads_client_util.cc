@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/values_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -223,7 +224,12 @@ uint64_t GetProfileUint64Pref(const std::string& path) {
   CHECK(value->is_string()) << "Wrong type for GetProfileUint64Pref: " << path;
 
   uint64_t integer;
-  base::StringToUint64(value->GetString(), &integer);
+  const bool success = base::StringToUint64(value->GetString(), &integer);
+  DCHECK(success) << "GetProfileUint64Pref failed: " << path;
+  if (!success) {
+    return 0;
+  }
+
   return integer;
 }
 
@@ -366,7 +372,12 @@ uint64_t GetLocalStateUint64Pref(const std::string& path) {
   CHECK(value->is_string()) << "Wrong type for GetProfileBooleanPref: " << path;
 
   uint64_t integer;
-  base::StringToUint64(value->GetString(), &integer);
+  const bool success = base::StringToUint64(value->GetString(), &integer);
+  DCHECK(success) << "GetLocalStateUint64Pref failed: " << path;
+  if (!success) {
+    return 0;
+  }
+
   return integer;
 }
 

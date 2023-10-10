@@ -12,7 +12,9 @@
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -1436,17 +1438,57 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
+- (absl::optional<base::Value>)migrateProfilePref:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+
+  absl::optional<base::Value> value;
+
+  if ([self.prefs[key] isKindOfClass:[NSString class]]) {
+    value = base::Value(base::SysNSStringToUTF8(self.prefs[key]));
+  } else if ([self.prefs[key] isKindOfClass:[NSNumber class]]) {
+    NSNumber* number = self.prefs[key];
+
+    if (strcmp([number objCType], /*BOOL*/ "c") == 0) {
+      // We cannot use @encode(BOOL) because it returns 'B' which is used for
+      // C++ bool and C99 _Bool.
+      value = base::Value([number boolValue]);
+    } else if (strcmp([number objCType], @encode(int)) == 0) {
+      value = base::Value([number intValue]);
+    } else if (strcmp([number objCType], @encode(double)) == 0) {
+      value = base::Value([number doubleValue]);
+    } else if (strcmp([number objCType], @encode(long long)) == 0) {
+      value = base::Int64ToValue([number longLongValue]);
+    } else if (strcmp([number objCType], @encode(unsigned long long)) == 0) {
+      value = base::Value(base::NumberToString([number unsignedLongLongValue]));
+    }
+  }
+
+  if (!value) {
+    // Failed to migrate pref.
+    return absl::nullopt;
+  }
+
+  [self setProfilePref:path value:value->Clone()];
+
+  return value->Clone();
+}
+
 - (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
+
+  if (![self.prefs[key] isKindOfClass:[NSString class]]) {
+    return [self migrateProfilePref:path];
+  }
+
   const auto json = (NSString*)self.prefs[key];
   if (!json) {
     return absl::nullopt;
   }
 
-  absl::optional<base::Value> value =
+  const absl::optional<base::Value> value =
       base::JSONReader::Read(base::SysNSStringToUTF8(json));
   if (!value) {
-    return absl::nullopt;
+    return [self migrateProfilePref:path];
   }
 
   return value->Clone();

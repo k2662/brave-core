@@ -12,10 +12,10 @@ import {
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController, { isDirectFeed } from './api'
 
-import { CachingWrapper } from '$web-common/mojomCache'
+import { EntityCachingWrapper } from '$web-common/mojomCache'
 
 export class PublishersCachingWrapper
-  extends CachingWrapper<Publisher>
+  extends EntityCachingWrapper<Publisher>
   implements PublishersListenerInterface {
   private receiver = new PublishersListenerReceiver(this)
   private controller: BraveNewsControllerRemote

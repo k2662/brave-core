@@ -10,7 +10,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       color: red;
   }
 
-  .menuItemWithIcon {
+  .menu-item-with-icon {
     --leo-icon-size: 14px;
     display: flex;
     flex-direction: row;
@@ -19,7 +19,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     gap: 22px;
   }
 
-  .menuSubtitle {
+  .menu-subtitle {
     padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
     color: var(--leo-color-text-tertiary);
     font: var(--leo-font-primary-small-semibold);
@@ -43,12 +43,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     value="[[toModelName_(defaultModelKeyPref_)]]"
     on-change="onModelSelectionChange_"
   >
-    <div class="menuSubtitle">
+    <div class="menu-subtitle">
       Chat
     </div>
     <template is="dom-repeat" items="[[models_]]">
         <leo-option value$="[[item.key]]">
-          <div class="menuItemWithIcon">
+          <div class="menu-item-with-icon">
             [[item.display_name]]
             <template is="dom-if" if="[[item.is_premium]]">
               <leo-icon name="lock-plain"></leo-icon>

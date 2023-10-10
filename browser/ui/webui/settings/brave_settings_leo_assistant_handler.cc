@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 
+#include <algorithm>
+#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"

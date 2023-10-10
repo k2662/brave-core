@@ -274,7 +274,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &omnibox::kDocumentProviderNoSyncRequirement,
     &omnibox::kExpandedStateHeight,
     &omnibox::kExpandedStateShape,
-    &omnibox::kOmniboxMostVisitedTilesOnSrp,
     &omnibox::kOmniboxSteadyStateHeight,
     &omnibox::kRichAutocompletion,
     &optimization_guide::features::kOptimizationGuideFetchingForSRP,

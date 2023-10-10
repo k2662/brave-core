@@ -7,11 +7,38 @@ import '//resources/cr_elements/md_select.css.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {CrSettingsPrefs} from 'chrome://resources/cr_components/settings_prefs/prefs_types.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
 import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl}
   from './brave_leo_assistant_browser_proxy.js'
+import 'chrome://resources/brave/leo.bundle.js'
 
+enum ModelEngineType {
+  LLAMA_REMOTE,
+  CLAUDE_REMOTE,
+}
+
+enum ModelCategory {
+  CHAT
+}
+
+interface Models {
+  key: string
+  name: string
+  display_name: string
+  is_premium: boolean
+  engine_type: ModelEngineType
+  category: ModelCategory
+}
+
+const MODEL_NAMES = new Map([
+  ['chat-default', 'llama2 13b'],
+  ['chat-leo-expanded', 'llama2 70b'],
+  ['chat-claude-instant', 'Claude Instant'],
+])
+
+const modelPrefPath = 'brave.ai_chat.default_model_key'
 
 const BraveLeoAssistantPageBase =
   WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
@@ -35,11 +62,14 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           type: Boolean,
           value: false,
           notify: true,
-        },
+        }
       }
     }
 
     leoAssistantShowOnToolbarPref_: boolean
+    defaultModelKeyPref_: string
+    models_: Models[]
+
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
 
@@ -60,6 +90,14 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       (isLeoVisible: boolean) => {
         this.leoAssistantShowOnToolbarPref_ = isLeoVisible
       })
+
+      this.browserProxy_.getModels()
+        .then((models: Models[]) => this.models_ = models)
+
+      CrSettingsPrefs.initialized
+        .then(() => {
+          this.defaultModelKeyPref_ = this.getPref(modelPrefPath).value
+        })
     }
 
     itemPref_(enabled: boolean) {
@@ -68,6 +106,15 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
         value: enabled,
       }
+    }
+
+    toModelName_(modelKey: string) {
+      return MODEL_NAMES.get(modelKey)
+    }
+
+    onModelSelectionChange_(e: any) {
+      this.setPrefValue(modelPrefPath, e.detail.value)
+      this.defaultModelKeyPref_ = e.detail.value
     }
 
     private updateShowLeoAssistantIcon_() {

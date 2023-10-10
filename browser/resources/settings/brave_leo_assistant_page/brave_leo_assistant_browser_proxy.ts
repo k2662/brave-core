@@ -9,6 +9,7 @@
   resetLeoData(): void
   getLeoIconVisibility(): Promise<boolean>
   toggleLeoIcon(): void
+  getModels(): any
  }
 
  export class BraveLeoAssistantBrowserProxyImpl
@@ -28,6 +29,10 @@
 
   resetLeoData() {
     chrome.send('resetLeoData')
+  }
+
+  getModels() {
+    return sendWithPromise('getModels')
   }
  }
 

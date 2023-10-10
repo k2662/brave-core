@@ -381,6 +381,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL},
     {"leoClearHistoryDataSubLabel",
      IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL},
+    {"braveLeoAssistantModelSelectionLabel",
+     IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
 
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},

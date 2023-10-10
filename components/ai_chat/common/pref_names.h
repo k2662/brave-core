@@ -22,6 +22,7 @@ constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
 constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
+constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

@@ -32,7 +32,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletNativeUtils;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
 /**
@@ -93,10 +93,8 @@ public class BraveWalletResetPreference
                         KeystoreHelper.resetBiometric();
                         Utils.setCryptoOnboarding(true);
 
-                        SharedPreferencesManager preferencesManager =
-                                SharedPreferencesManager.getInstance();
                         for (String key : WalletConstants.BRAVE_WALLET_PREFS) {
-                            preferencesManager.removeKey(key);
+                            ChromeSharedPreferences.getInstance().removeKey(key);
                         }
                     }
 

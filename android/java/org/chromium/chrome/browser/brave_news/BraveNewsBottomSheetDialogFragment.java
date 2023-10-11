@@ -28,7 +28,7 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.UserEnabled;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.TabUtils;
 
 public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragment {
@@ -118,7 +118,7 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     if (mBraveNewsController != null) {
                         // Removes the news source from the fetch list by setting a
                         // UserEnabled.DISABLED prop for the publisher in question
-                        SharedPreferencesManager.getInstance().writeBoolean(
+                        ChromeSharedPreferences.getInstance().writeBoolean(
                                 BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
                         mBraveNewsController.setPublisherPref(mPublisherId, UserEnabled.DISABLED);
                         BraveNewsUtils.disableFollowingPublisherList(mPublisherId);

@@ -45,7 +45,7 @@ import org.chromium.chrome.browser.document.ChromeLauncherActivity;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -469,20 +469,15 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                     widgetTilesJsonArray.put(widgetTile.toJSONObject());
                 }
             }
-            SharedPreferencesManager.getInstance()
-                    .writeString(
-                            BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
-                            widgetTilesJsonArray.toString());
+            ChromeSharedPreferences.getInstance().writeString(
+                    BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
+                    widgetTilesJsonArray.toString());
             updateAppWidgets();
         }
 
         public static List<WidgetTile> readWidgetTiles() {
-            String widgetTilesJson =
-                    SharedPreferencesManager.getInstance()
-                            .readString(
-                                    BravePreferenceKeys
-                                            .BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
-                                    null);
+            String widgetTilesJson = ChromeSharedPreferences.getInstance().readString(
+                    BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES, null);
             List<WidgetTile> widgetTileList = new ArrayList();
             widgetTilesJson = "{\"widgetTiles\":" + widgetTilesJson + "}";
             try {

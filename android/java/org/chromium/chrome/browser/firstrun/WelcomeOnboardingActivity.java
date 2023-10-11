@@ -47,7 +47,7 @@ import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -121,10 +121,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                             if (referrerUrl == null) return;
 
                             if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)) {
-                                SharedPreferencesManager.getInstance().writeBoolean(
+                                ChromeSharedPreferences.getInstance().writeBoolean(
                                         BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, true);
                             } else if (referrerUrl.equals(BraveConstants.DEEPLINK_ANDROID_VPN)) {
-                                SharedPreferencesManager.getInstance().writeBoolean(
+                                ChromeSharedPreferences.getInstance().writeBoolean(
                                         BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, true);
                             }
                         } catch (RemoteException e) {
@@ -407,7 +407,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
             FirstRunStatus.setFirstRunFlowComplete(true);
-            SharedPreferencesManager.getInstance().writeBoolean(
+            ChromeSharedPreferences.getInstance().writeBoolean(
                     ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
             FirstRunUtils.setEulaAccepted();
             finish();

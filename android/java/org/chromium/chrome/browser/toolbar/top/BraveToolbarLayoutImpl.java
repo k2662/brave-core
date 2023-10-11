@@ -93,7 +93,7 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.Playlist
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -482,9 +482,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 String countryCode = Locale.getDefault().getCountry();
                 if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                         && url.domainIs(YOUTUBE_DOMAIN)
-                        && SharedPreferencesManager.getInstance().readBoolean(
+                        && ChromeSharedPreferences.getInstance().readBoolean(
                                 BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)) {
-                    SharedPreferencesManager.getInstance().writeBoolean(
+                    ChromeSharedPreferences.getInstance().writeBoolean(
                             BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
                 }
             }
@@ -571,7 +571,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private static boolean isPlaylistEnabledByPrefsAndFlags() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && SharedPreferencesManager.getInstance().readBoolean(
+                && ChromeSharedPreferences.getInstance().readBoolean(
                         BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true);
     }
 
@@ -620,7 +620,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 public void onOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
                     try {
                         if (playlistOptionsModel.getOptionType() == PlaylistOptions.ADD_MEDIA) {
-                            int mediaCount = SharedPreferencesManager.getInstance().readInt(
+                            int mediaCount = ChromeSharedPreferences.getInstance().readInt(
                                     PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
                             if (mediaCount == 2) {
                                 PlaylistWarningDialogListener playlistWarningDialogListener =
@@ -667,7 +667,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (!isPlaylistButtonVisible()) {
                 PlaylistViewUtils.showPlaylistButton(
                         BraveActivity.getBraveActivity(), viewGroup, playlistOptionsListener);
-                if (SharedPreferencesManager.getInstance().readBoolean(
+                if (ChromeSharedPreferences.getInstance().readBoolean(
                             PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
                     View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
                     if (playlistButton != null) {
@@ -692,7 +692,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             }
                         });
                     }
-                    SharedPreferencesManager.getInstance().writeBoolean(
+                    ChromeSharedPreferences.getInstance().writeBoolean(
                             PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
                 }
             }
@@ -707,10 +707,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         mPlaylistService.addMediaFiles(items, ConstantUtils.DEFAULT_PLAYLIST,
                 shouldCacheMediaFilesForPlaylist(), addedItems -> {});
-        int mediaCount = SharedPreferencesManager.getInstance().readInt(
+        int mediaCount = ChromeSharedPreferences.getInstance().readInt(
                 PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
         if (mediaCount < PLAYLIST_MEDIA_COUNT_LIMIT) {
-            SharedPreferencesManager.getInstance().writeInt(
+            ChromeSharedPreferences.getInstance().writeInt(
                     PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
         }
     }
@@ -755,12 +755,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private boolean shouldCacheMediaFilesForPlaylist() {
         boolean shouldCacheOnlyOnWifi =
-                (SharedPreferencesManager.getInstance().readInt(
+                (ChromeSharedPreferences.getInstance().readInt(
                          BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
                                 == 2
                         && ConnectionUtils.isWifiAvailable(getContext()));
 
-        boolean shouldCache = SharedPreferencesManager.getInstance().readInt(
+        boolean shouldCache = ChromeSharedPreferences.getInstance().readInt(
                                       BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
                         == 0
                 || shouldCacheOnlyOnWifi;

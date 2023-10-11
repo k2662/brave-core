@@ -10,7 +10,7 @@ import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,7 +41,7 @@ public class KeystoreHelper {
             return;
         }
 
-        SharedPreferencesManager.getInstance().writeBoolean(
+        ChromeSharedPreferences.getInstance().writeBoolean(
                 BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET, true);
     }
 
@@ -81,14 +81,14 @@ public class KeystoreHelper {
         String ivBase64 = Base64.encodeToString(iv, Base64.DEFAULT);
         String encryptedBase64 = Base64.encodeToString(encrypted, Base64.DEFAULT);
 
-        SharedPreferencesManager.getInstance().writeString(
+        ChromeSharedPreferences.getInstance().writeString(
                 BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV, ivBase64);
-        SharedPreferencesManager.getInstance().writeString(
+        ChromeSharedPreferences.getInstance().writeString(
                 BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED, encryptedBase64);
     }
 
     public static boolean shouldUseBiometricOnUnlock() {
-        return SharedPreferencesManager.getInstance().readBoolean(
+        return ChromeSharedPreferences.getInstance().readBoolean(
                 BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET, false);
     }
 
@@ -97,9 +97,9 @@ public class KeystoreHelper {
                    InvalidAlgorithmParameterException, BadPaddingException,
                    UnsupportedEncodingException, IOException, NoSuchPaddingException,
                    UnrecoverableEntryException, InvalidKeyException, IllegalBlockSizeException {
-        String ivBase64 = SharedPreferencesManager.getInstance().readString(
+        String ivBase64 = ChromeSharedPreferences.getInstance().readString(
                 BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV, "");
-        String encryptedBase64 = SharedPreferencesManager.getInstance().readString(
+        String encryptedBase64 = ChromeSharedPreferences.getInstance().readString(
                 BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED, "");
         if (ivBase64.isEmpty() || encryptedBase64.isEmpty()) {
             return "";
@@ -118,9 +118,11 @@ public class KeystoreHelper {
     }
 
     public static void resetBiometric() {
-        SharedPreferencesManager manager = SharedPreferencesManager.getInstance();
-        manager.removeKey(BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET);
-        manager.removeKey(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED);
-        manager.removeKey(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV);
+        ChromeSharedPreferences.getInstance().removeKey(
+                BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET);
+        ChromeSharedPreferences.getInstance().removeKey(
+                BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED);
+        ChromeSharedPreferences.getInstance().removeKey(
+                BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV);
     }
 }

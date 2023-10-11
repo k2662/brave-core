@@ -70,7 +70,7 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.DisplayAdsTable;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
@@ -723,7 +723,7 @@ public class CardBuilderFeedCard {
 
     private void openUrlInSameTabAndSavePosition(String myUrl) {
         try {
-            SharedPreferencesManager.getInstance().writeInt(
+            ChromeSharedPreferences.getInstance().writeInt(
                     Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
                     mPosition);
             TabUtils.openUrlInSameTab(myUrl);
@@ -1319,10 +1319,10 @@ public class CardBuilderFeedCard {
                                 displayAd.uuid, displayAd.creativeInstanceId);
                     } else {
                         // Brave News updates the no. of "normal" cards visited
-                        int visitedNewsCardsCount = SharedPreferencesManager.getInstance().readInt(
+                        int visitedNewsCardsCount = ChromeSharedPreferences.getInstance().readInt(
                                 BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED);
                         visitedNewsCardsCount++;
-                        SharedPreferencesManager.getInstance().writeInt(
+                        ChromeSharedPreferences.getInstance().writeInt(
                                 BravePreferenceKeys.BRAVE_NEWS_CARDS_VISITED,
                                 visitedNewsCardsCount);
                         if (visitedNewsCardsCount > 0) {

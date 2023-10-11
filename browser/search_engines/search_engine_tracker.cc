@@ -118,18 +118,25 @@ SearchEngineTracker* SearchEngineTrackerFactory::GetForBrowserContext(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
+content::BrowserContext* SearchEngineTrackerFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  auto* profile = Profile::FromBrowserContext(context);
+  // Do not create in unit tests or when any of the required parameters for
+  // SearchEngineTracker c'tor is nullptr.
+  if (profile->AsTestingProfile() || !profile->GetPrefs() ||
+      !g_browser_process->local_state() ||
+      !TemplateURLServiceFactory::GetForProfile(profile)) {
+    return nullptr;
+  }
+  return context;
+}
+
 KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
-  auto* template_url_service =
-      TemplateURLServiceFactory::GetForProfile(profile);
-  auto* profile_prefs = profile->GetPrefs();
-  auto* local_state = g_browser_process->local_state();
-  if (template_url_service && profile_prefs && local_state) {
-    return new SearchEngineTracker(template_url_service, profile_prefs,
-                                   local_state);
-  }
-  return nullptr;
+  return new SearchEngineTracker(
+      TemplateURLServiceFactory::GetForProfile(profile), profile->GetPrefs(),
+      g_browser_process->local_state());
 }
 
 bool SearchEngineTrackerFactory::ServiceIsCreatedWithBrowserContext() const {

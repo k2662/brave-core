@@ -1170,11 +1170,12 @@ public class BraveNewTabPageLayout
             FeedSurfaceScrollDelegate scrollDelegate, TouchEnabledDelegate touchEnabledDelegate,
             UiConfig uiConfig, ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma,
             boolean isIncognito, WindowAndroid windowAndroid, boolean isNtpAsHomeSurfaceEnabled,
-            boolean isSurfacePolishEnabled, boolean isSurfacePolishOmniboxColorEnabled) {
+            boolean isSurfacePolishEnabled, boolean isSurfacePolishOmniboxColorEnabled,
+            boolean isTablet) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
                 searchProviderIsGoogle, scrollDelegate, touchEnabledDelegate, uiConfig,
                 lifecycleDispatcher, uma, isIncognito, windowAndroid, isNtpAsHomeSurfaceEnabled,
-                isSurfacePolishEnabled, isSurfacePolishOmniboxColorEnabled);
+                isSurfacePolishEnabled, isSurfacePolishOmniboxColorEnabled, isTablet);
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 

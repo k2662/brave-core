@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.brave_stats;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,7 +41,6 @@ import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.permissions.PermissionConstants;
 
 import java.util.List;
 
@@ -197,7 +197,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     public void onResume() {
         super.onResume();
         if (!BravePermissionUtils.hasPermission(
-                    getContext(), PermissionConstants.NOTIFICATION_PERMISSION)
+                    getContext(), Manifest.permission.POST_NOTIFICATIONS)
                 || BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())) {
             statsNotificationView.setVisibility(View.VISIBLE);
         } else {
@@ -212,7 +212,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         notificationOnButton.setOnClickListener(v -> {
             if (BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())
                     || getActivity().shouldShowRequestPermissionRationale(
-                            PermissionConstants.NOTIFICATION_PERMISSION)
+                            Manifest.permission.POST_NOTIFICATIONS)
                     || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
                 // other than android 13 redirect to
                 // setting page and for android 13 Last time don't allow selected in permission
@@ -220,8 +220,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 BravePermissionUtils.notificationSettingPage(getContext());
             } else {
                 // 1st time request permission
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+                ActivityCompat.requestPermissions(
+                        getActivity(), new String[] {Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
         });
     }

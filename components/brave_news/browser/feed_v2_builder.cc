@@ -252,6 +252,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
 // 1 - 5 Inline Articles (from the channel)
 // This function is the same as GenerateBlock, except that the available
 // articles are filtered to only be from the specified channel.
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.kxe6xeqm2vfn
 std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
     ArticleInfos& articles,
     const Publishers& publishers,
@@ -316,6 +317,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   return result;
 }
 
+// Generate a Topic Cluster block
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4vwmn4vmf2tq
 std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
     std::vector<Topic>& topics,
     const Publishers& publishers) {
@@ -361,6 +364,11 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
   return items;
 }
 
+// This function will generate a cluster block (if we have
+// articles/topics/channels available).
+// This could be either a Channel cluster or a Topic cluster, based on a ratio
+// configured through the |kBraveNewsCategoryTopicRatio| FeatureParam.
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.agyx2d7gifd9
 std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
     std::vector<Topic>& topics,
     const Publishers& publishers,
@@ -373,6 +381,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
     return {};
   }
 
+  // Determine whether we should generate a channel or topic cluster.
   auto generate_channel =
       (!channels.empty() &&
        base::RandDouble() < features::kBraveNewsCategoryTopicRatio.Get()) ||

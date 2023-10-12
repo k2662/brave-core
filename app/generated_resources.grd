@@ -2954,8 +2954,8 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_COOKIE_THEFT_AND_ACCOUNT" desc="Subpage summary for cookie theft warning with account info.">
         This file can harm your personal and social network accounts, including <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_MALWARE" desc="Subpage summary text for a download item when the downloaded file may hide malware.">
-        This file may hide malware
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_ARCHIVE_MALWARE" desc="Subpage summary text for a download item when the downloaded archive file may hide malware.">
+        This archive file includes other files that may hide malware
       </message>
 
       <!-- Deep scanning in download bubble -->
@@ -8174,20 +8174,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_TOOLBAR_LABEL" desc="Accessibility label for the text formatting toolbar of the reading mode feature. Spoken by screen readers.">
         Text formatting
       </message>
-      <message name="IDS_READING_MODE_DISPLAY_SETTINGS" desc="Title for the section of the settings dropdown that adjusts visual display settings." translateable="false">
-        Display
-      </message>
-      <message name="IDS_READING_MODE_FONT_SIZE" desc="Dropdown option for changing the font size for reading mode." translateable="false">
+      <message name="IDS_READING_MODE_FONT_SIZE" desc="Accessibility label for button that opens a dropdown with options for changing the font size for reading mode." translateable="false">
         Font size
       </message>
       <message name="IDS_READING_MODE_FONT_NAME_COMBOBOX_LABEL" desc="Accessibility label for the font name combobox of the reading mode feature.">
         Font
       </message>
       <message name="IDS_READING_MODE_DECREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the decrease font size button of the reading mode feature.">
-        Decrease font-size
+        Decrease font size
       </message>
       <message name="IDS_READING_MODE_INCREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the increase font size button of the reading mode feature.">
-        Increase font-size
+        Increase font size
       </message>
       <message name="IDS_READING_MODE_COLORS_COMBOBOX_LABEL" desc="Accessibility label for the colors combobox of the reading mode feature.">
         Color theme
@@ -8239,6 +8236,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_TURN_HIGHLIGHT_ON" desc="Tooltip label for button that turns on highlighting in Read Aloud." translateable="false">
         Turn on highlight
+      </message>
+      <message name="IDS_READING_MODE_PLAY_DESCRIPTION" desc="Accessibility description for button that plays speech in Read Aloud." translateable="false">
+        Listen to the text with natural voice
+      </message>
+      <message name="IDS_READING_MODE_PLAY_SPEECH" desc="Accessibility label for button that plays speech in Read Aloud." translateable="false">
+        Play
+      </message>
+      <message name="IDS_READING_MODE_PAUSE_SPEECH" desc="Accessibility label for button that pauses speech in Read Aloud." translateable="false">
+        Pause
+      </message>
+      <message name="IDS_READING_MODE_NAVIGATE_PREVIOUS_SENTENCE" desc="Accessibility label for button that moves speech in Read Aloud to the previous sentence." translateable="false">
+        Previous sentence
+      </message>
+      <message name="IDS_READING_MODE_NAVIGATE_NEXT_SENTENCE" desc="Accessibility label for button that moves speech in Read Aloud to the next sentence." translateable="false">
+        Next sentence
+      </message>
+      <message name="IDS_READING_MODE_MORE_OPTIONS" desc="Accessibility label for button that contains more text style options for the reading mode feature." translateable="false">
+        More options
+      </message>
+      <message name="IDS_READING_MODE_VOICE_SPEED" desc="Accessibility label for button that opens a dropdown with options for changing the speed of the voice for Read Aloud." translateable="false">
+        Voice speed
+      </message>
+      <message name="IDS_READING_MODE_VOICE_SELECTION" desc="Accessibility label for button that opens a dropdown with options for changing the voice used for Read Aloud." translateable="false">
+        Voice selection
       </message>
       <message name="IDS_READING_MODE_SIDE_PANEL_PROMO" desc="Text for the in-product-help bubble shown for the reading mode bubble.">
         To show a simplified view of this page, open the side panel and select Reading mode
@@ -8481,6 +8502,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_ORGANIZE" desc="The text label of the Tab Organization button." translateable="false">
         Organize tabs?
       </message>
+      <message name="IDS_TOOLTIP_TAB_ORGANIZE_CLOSE" desc="The tooltip for the close button within the Tab Organization button." translateable="false">
+        Close
+      </message>
 
       <!-- Strings for intent picker -->
       <if expr="not is_android">
@@ -8506,14 +8530,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Open in app
         </message>
 
+        <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
+          Always use the <ph name="APP">$1<ex>YouTube</ex></ph> app to open supported web links?
+        </message>
+        <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_OK_LABEL" desc="The label of a confirm button for an infobar asking if the user wants to open web links in an app. If clicked, the selected app will always be opened when clicking supported web links.">
+          Always use
+        </message>
+
         <if expr="is_chromeos">
           <then>
-            <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
-              Always use the <ph name="APP">$1<ex>YouTube</ex></ph> app to open supported web links?
-            </message>
-            <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_OK_LABEL" desc="The label of a confirm button for an infobar asking if the user wants to open web links in an app. If clicked, the selected app will always be opened when clicking supported web links.">
-              Always use
-            </message>
             <message name="IDS_INTENT_PICKER_SELECT_AN_APP_SUBTITLE" desc="The subtitle of a dialog containing a list of installed applications. The dialog allows the user to select an app to open a web link.">
               Select an app on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to open this link
             </message>
@@ -10009,6 +10034,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_CLOSE_GROUP" desc="The label of the tab group header context menu item for closing all tabs in the current group.">
           Close group
         </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_HIDE_GROUP" desc="The label of the tab group header context menu item for hiding a saved group into the bookmarks bar.">
+          Hide group
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_DELETE_GROUP" desc="The label of the tab group header context menu item for deleting all tabs in the current group.">
           Delete group
         </message>
@@ -10040,6 +10068,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_CLOSE_GROUP" desc="In Title Case: The label of the tab group header context menu item for closing all tabs in the current group.">
           Close Group
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_HIDE_GROUP" desc="The label of the tab group header context menu item for hiding a saved group into the bookmarks bar.">
+          Hide Group
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_DELETE_GROUP" desc="The label of the tab group header context menu item for deleting all tabs in the current group.">
           Delete Group
@@ -14142,6 +14173,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_FILE_SYSTEM_ACCESS_CHOOSER_OPEN_WRITABLE_DIRECTORY_TITLE" desc="Title of the chooser when opening a directory with read and write permissions">
       Select where this site can save changes
+    </message>
+    <message name="IDS_FILE_SYSTEM_ACCESS_CHOOSER_OPEN_SAVE_FILE_TITLE" desc="Title of the chooser when opening a file  with read and write permissions">
+      Warning: this site can see edits you make
     </message>
 
     <!-- File System Access restricted directory and file dialogs. -->

@@ -190,6 +190,8 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
         /*should_retry=*/true));
   }
 
+  // TODO(tmancey): Decouple to |ParsePaymentToken|.
+
   // Get id
   const std::string* const id = dict->FindString("id");
   if (!id) {

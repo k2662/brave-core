@@ -12,6 +12,12 @@ import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
 
+// TODO(nullhook): share these strings with the settings webui
+const getModelSubtitleLocale = (modelKey: string): string => {
+  const key = modelKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('')
+  return `braveLeo${key}Subtitle`
+}
+
 export default function FeatureMenu() {
   const context = React.useContext(DataContext)
 
@@ -51,7 +57,10 @@ export default function FeatureMenu() {
           onClick={() => context.setCurrentModel(model)}
         >
           <div className={styles.menuItemWithIcon}>
-            {model.name}
+            <div>
+              <div>{model.name}</div>
+              <p className={styles.modelSubtitle}>{getLocale(getModelSubtitleLocale(model.key))}</p>
+            </div>
             {model.isPremium && <Icon name='lock-plain' />}
           </div>
         </leo-menu-item>

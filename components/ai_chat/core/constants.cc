@@ -67,7 +67,12 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
       {"optionOther", IDS_CHAT_UI_OPTION_OTHER},
       {"feedbackError", IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR},
-      {"ratingError", IDS_CHAT_UI_RATING_ERROR}};
+      {"ratingError", IDS_CHAT_UI_RATING_ERROR},
+      {"braveLeoChatDefaultSubtitle", IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE},
+      {"braveLeoChatLeoExpandedSubtitle",
+       IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
+      {"braveLeoChatClaudeInstantSubtitle",
+       IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE}};
 
   return kLocalizedStrings;
 }

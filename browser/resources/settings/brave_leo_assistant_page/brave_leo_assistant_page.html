@@ -19,10 +19,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     gap: 22px;
   }
 
+  .model-subtitle {
+    font: var(--leo-font-primary-small-regular);
+    color: var(--leo-color-text-tertiary);
+    padding: 0;
+    margin: 0;
+  }
+
   .menu-subtitle {
     padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
     color: var(--leo-color-text-tertiary);
     font: var(--leo-font-primary-small-semibold);
+  }
+
+  leo-dropdown {
+    min-width: 240px;
   }
 </style>
 <settings-toggle-button class="cr-row hr"
@@ -49,7 +60,10 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <template is="dom-repeat" items="[[models_]]">
         <leo-option value$="[[item.key]]">
           <div class="menu-item-with-icon">
-            [[item.display_name]]
+            <div>
+              <div>[[item.display_name]]</div>
+              <p class="model-subtitle">[[getModelSubtitleLocale_(item.key)]]</p>
+            </div>
             <template is="dom-if" if="[[item.is_premium]]">
               <leo-icon name="lock-plain"></leo-icon>
             </template>

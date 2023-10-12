@@ -33,8 +33,8 @@ interface Models {
 }
 
 const MODEL_NAMES = new Map([
-  ['chat-default', 'llama2 13b'],
-  ['chat-leo-expanded', 'llama2 70b'],
+  ['chat-default', 'Llama-2-13b'],
+  ['chat-leo-expanded', 'Llama-2-70b'],
   ['chat-claude-instant', 'Claude Instant'],
 ])
 
@@ -110,6 +110,12 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     toModelName_(modelKey: string) {
       return MODEL_NAMES.get(modelKey)
+    }
+
+    // TODO(nullhook): share these strings with AIChat webui
+    getModelSubtitleLocale_(modelKey: string) {
+      const key = modelKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('')
+      return this.i18n(`braveLeo${key}Subtitle`)
     }
 
     onModelSelectionChange_(e: any) {

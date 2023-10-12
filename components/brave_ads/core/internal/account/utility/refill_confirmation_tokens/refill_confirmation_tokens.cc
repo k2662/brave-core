@@ -186,6 +186,7 @@ void RefillConfirmationTokens::GetSignedTokensCallback(
     const auto& [failure, should_retry] = result.error();
 
     BLOG(0, failure);
+
     return FailedToRefill(should_retry);
   }
 

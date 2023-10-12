@@ -1,0 +1,14 @@
+diff --git a/build/toolchain/rbe.gni b/build/toolchain/rbe.gni
+index cd86e22c01ef3b16f83eb8fa3037022f9d34c5b0..e80f1ec500c021c9779d096c7f42a78e146d588c 100644
+--- a/build/toolchain/rbe.gni
++++ b/build/toolchain/rbe.gni
+@@ -1,7 +1,9 @@
+ # Defines the configuration of Remote Build Execution (RBE).
+ 
+ # The directory where the re-client tooling binaries are.
++declare_args() {
+ rbe_bin_dir = rebase_path("//buildtools/reclient", root_build_dir)
++}
+ 
+ declare_args() {
+   # Execution root - this should be the root of the source tree.

@@ -121,9 +121,12 @@ void BraveLocationBarView::Init() {
 #endif
 
   // brave action buttons
-  brave_actions_ = AddChildView(
-      std::make_unique<BraveActionsContainer>(browser_, profile()));
-  brave_actions_->Init();
+  if (!browser_->profile()->AsTestingProfile()) {
+    brave_actions_ = AddChildView(
+        std::make_unique<BraveActionsContainer>(browser_, profile()));
+    brave_actions_->Init();
+  }
+
   // Call Update again to cause a Layout
   Update(nullptr);
 

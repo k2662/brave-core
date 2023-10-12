@@ -59,5 +59,8 @@ provideStrings({
   optionUnsafeHarmful: 'Unsafe/harmful',
   optionOther: 'Other',
   ratingError: 'Your rating could not be submitted, please check network connection and try again',
-  feedbackError: 'Your feedback could not be submitted, please check network connection and try again'
+  feedbackError: 'Your feedback could not be submitted, please check network connection and try again',
+  braveLeoChatDefaultSubtitle: 'General purpose chat',
+  braveLeoChatLeoExpandedSubtitle: 'Advanced and accurate chat',
+  braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks'
 })

@@ -11,6 +11,7 @@ import { getLocale } from '$web-common/locale'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
+import classnames from '$web-common/classnames'
 
 // TODO(nullhook): share these strings with the settings webui
 const getModelSubtitleLocale = (modelKey: string): string => {
@@ -61,7 +62,10 @@ export default function FeatureMenu() {
               <div>{model.name}</div>
               <p className={styles.modelSubtitle}>{getLocale(getModelSubtitleLocale(model.key))}</p>
             </div>
-            {model.isPremium && <Icon name='lock-plain' />}
+            {model.isPremium && (<Icon
+              className={classnames({[styles.lockOpen]: context.isPremiumUser})}
+              name={context.isPremiumUser ? 'lock-open' : 'lock-plain'} />
+            )}
           </div>
         </leo-menu-item>
       ))}

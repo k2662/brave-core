@@ -40,7 +40,9 @@
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
@@ -81,7 +83,7 @@ static NSString* const kLegacyAdsSubdivisionTargetingCodePrefKey =
 static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
     @"BATAutoDetectedAdsSubdivisionTargetingCodePrefKey";
 
-static NSString* const kEnabledPrefKey =
+static NSString* const kOptedInToNotificationAds =
     base::SysUTF8ToNSString(brave_ads::prefs::kOptedInToNotificationAds);
 static NSString* const kMaximumNotificationAdsPerHourPrefKey =
     base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
@@ -93,10 +95,6 @@ static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
     base::SysUTF8ToNSString(
         brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
-static NSString* const kBraveNewsOptedInPrefKey =
-    base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
-static NSString* const kNewTabPageShowTodayPrefKey =
-    base::SysUTF8ToNSString(brave_news::prefs::kNewTabPageShowToday);
 
 namespace {
 
@@ -169,12 +167,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     } else {
       [self migratePrefs];
     }
-
-    // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-    // code that permanently enables Brave Today preferences when the issue is
-    // resolved.
-    self.prefs[kBraveNewsOptedInPrefKey] = @(true);
-    self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
 
     [self setupNetworkMonitoring];
 
@@ -367,12 +359,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 #pragma mark - Configuration
 
 - (BOOL)isEnabled {
-  return [self.prefs[kEnabledPrefKey] boolValue];
+  return [self.prefs[kOptedInToNotificationAds] boolValue];
 }
 
 - (void)setEnabled:(BOOL)enabled {
-  self.prefs[kEnabledPrefKey] = @(enabled);
-  [self savePref:kEnabledPrefKey];
+  self.prefs[kOptedInToNotificationAds] = @(enabled);
+  [self savePref:kOptedInToNotificationAds];
 }
 
 - (NSInteger)numberOfAllowableAdsPerHour {
@@ -420,11 +412,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)savePref:(NSString*)name {
+  [self savePrefs];
+
   if ([self isAdsServiceRunning]) {
     adsClientNotifier->NotifyPrefDidChange(base::SysNSStringToUTF8(name));
   }
-
-  [self savePrefs];
 }
 
 - (void)savePrefs {
@@ -441,7 +433,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)migratePrefs {
   if ([self.prefs objectForKey:kLegacyAdsEnabledPrefKey]) {
-    self.prefs[kEnabledPrefKey] = self.prefs[kLegacyAdsEnabledPrefKey];
+    self.prefs[kOptedInToNotificationAds] =
+        self.prefs[kLegacyAdsEnabledPrefKey];
     [self.prefs removeObjectForKey:kLegacyAdsEnabledPrefKey];
   }
 
@@ -1424,6 +1417,21 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (bool)getBooleanPref:(const std::string&)path {
+  // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
+  // code that permanently sets values for preferences when the issue is
+  // resolved.
+  if (path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday ||
+      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
+      path == ntp_background_images::prefs::
+                  kNewTabPageShowSponsoredImagesBackgroundImage) {
+    return true;
+  }
+
+  if (path == brave_rewards::prefs::kEnabled) {
+    return [self.prefs[kOptedInToNotificationAds] boolValue];
+  }
+
   const auto key = base::SysUTF8ToNSString(path);
   return [self.prefs[key] boolValue];
 }
@@ -1435,6 +1443,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (int)getIntegerPref:(const std::string&)path {
+  // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
+  // code that permanently sets values for preferences when the issue is
+  // resolved.
+  if (path == brave_ads::prefs::kIssuerPing) {
+    return 7'200'000;
+  }
+
   const auto key = base::SysUTF8ToNSString(path);
   return [self.prefs[key] intValue];
 }
@@ -1457,6 +1472,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (std::string)getStringPref:(const std::string&)path {
+  // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
+  // code that permanently sets values for preferences when the issue is
+  // resolved.
+  if (path == brave_ads::prefs::kSubdivisionTargetingSubdivision) {
+    return "AUTO";
+  }
+
   const auto key = base::SysUTF8ToNSString(path);
   const auto value = (NSString*)self.prefs[key];
   if (!value) {

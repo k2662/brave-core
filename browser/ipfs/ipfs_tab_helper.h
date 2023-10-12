@@ -41,6 +41,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   ~IPFSTabHelper() override;
 
   static bool MaybeCreateForWebContents(content::WebContents* web_contents);
+
   GURL GetIPFSResolvedURL() const;
 
   void SetResolverForTesting(std::unique_ptr<IPFSHostResolver> resolver) {
@@ -128,8 +129,8 @@ class IPFSTabHelper : public content::WebContentsObserver,
   bool IsDNSLinkCheckEnabled() const;
   bool IsAutoRedirectIPFSResourcesEnabled() const;
   void IPFSResourceLinkResolved(const GURL& ipfs);
-  void DNSLinkResolved(const GURL& ipfs, bool is_gateway_url);
-  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers);
+  void DNSLinkResolved(const GURL& ipfs, bool is_gateway_url, const bool& auto_redirect_blocked, const bool& should_not_replace_current_entry);
+  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers, const bool& auto_redirect_blocked, const bool should_not_replace_current_entry = true);
   void UpdateDnsLinkButtonState();
   absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
@@ -141,20 +142,26 @@ class IPFSTabHelper : public content::WebContentsObserver,
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+  // void DidRedirectNavigation(content::NavigationHandle* navigation_handle)  override;
+  // void DidStartNavigation(content::NavigationHandle* navigation_handle)  override;
 
   void UpdateLocationBar();
 
   void CheckDNSLinkRecord(const GURL& gurl,
                           bool is_gateway_url,
-                          absl::optional<std::string> x_ipfs_path_header);
+                          absl::optional<std::string> x_ipfs_path_header,
+                          const bool& auto_redirect_blocked,
+                          const bool& should_not_replace_current_entry);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
                             absl::optional<std::string> x_ipfs_path_header,
+                            const bool auto_redirect_blocked,
+                            const bool should_not_replace_current_entry,
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
-  void LoadUrl(const GURL& gurl);
+  void LoadUrl(const GURL& gurl, const bool should_replace_current_entry = true);
 
   void SetFallbackAddress(const GURL& original_url);
 
@@ -169,7 +176,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
       show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   absl::optional<GURL> initial_navigation_url_;
-  bool auto_redirect_blocked_{false};
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

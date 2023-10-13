@@ -12,7 +12,7 @@ pipeline {
         booleanParam(name: 'USE_GOMA', defaultValue: true)
         booleanParam(name: 'SKIP_SIGNING', defaultValue: SKIP_SIGNING_DEFAULT)
         booleanParam(name: 'DCHECK_ALWAYS_ON', defaultValue: true)
-        string(name: 'DEVOPS_BRANCH', defaultValue: 'master')
+        string(name: 'DEVOPS_BRANCH', defaultValue: 'mplesa-jenkins-reclient')
         string(name: 'NODE_LABEL', defaultValue: '')
         string(name: 'SLACK_NOTIFY', defaultValue: '')
     }

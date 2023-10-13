@@ -2556,8 +2556,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_NAME" desc="A selection menu option to sort the All Sites list by the name of the site, which is derived from its URL." meaning="Name of an inanimate object">
     Name
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_HEADER" desc="The header name for a list of origins that the user has granted edit permissions from the File System Access API.">
+    Allowed to edit files or folders on your device
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_EDIT_HEADER" desc="The header name for a list of files that the user has granted edit permissions from the File System Access API.">
-    Edit
+    Can edit files or folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_REMOVE_GRANT_LABEL" desc="A label that represents removing a site's permission to access a file or folder, previously granted access from the File System Access API.">
     Remove grant
@@ -2566,7 +2569,7 @@
     Remove
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_VIEW_HEADER" desc="The header name for a list of files that the user has granted view permissions from the File System Access API.">
-    View
+    Can view files or folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_SITE_LIST_VIEW_SITE_DETAILS" desc="A menu option that navigates to the site details page for the selected site.">
     View site details
@@ -3274,7 +3277,13 @@
     Sites allowed to use third-party cookies
   </message>
   <message name="IDS_SETTINGS_TRACKING_PROTECTION_SITES_ALLOWED_COOKIES_DESCRIPTION" desc="Description of the section on the Tracking Protection settings page that lets users manage which sites are allowed to use third-party cookies. Explains that third-party cookies are also allowed for subdomains of the listed sites.">
-   Affects the sites listed here and their subdomains. For example, adding “google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
+    Affects the sites listed here and their subdomains. For example, adding “google.com” means that third-party cookies can also be active for mail.google.com, because it’s part of google.com.
+  </message>
+  <message name="IDS_SETTINGS_TRACKING_PROTECTION_ROLLBACK_NOTICE" desc="Notice text on the top of the 'Third-party cookies' settings page telling users that Tracking Protection is unavailable." translateable="false">
+    Tracking Protection is temporarily unavailable. While Brave is updating this feature, sites can temporarily use third-party cookies unless you block them. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_TRACKING_PROTECTION_ROLLBACK_NOTICE_LEARN_MORE_ARIA_LABEL" desc="Screenreader text for the 'Learn more' link in the Tracking Protection rollback notice." translateable="false">
+    Learn more about Tracking Protection availability
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_APP_PROTOCOL_HANDLERS" desc="Label for the app protocol handlers (e.g. mailto) in site settings.">
     Apps

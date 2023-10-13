@@ -9,12 +9,12 @@ pipeline {
         choice(name: 'CHANNEL', choices: ['nightly', 'dev', 'beta', 'release', 'development'])
         choice(name: 'BUILD_TYPE', choices: ["Static", "Release", "Component", "Debug"])
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
-        booleanParam(name: 'USE_GOMA', defaultValue: true)
+        booleanParam(name: 'USE_GOMA', defaultValue: false)
         booleanParam(name: 'SKIP_SIGNING', defaultValue: SKIP_SIGNING_DEFAULT)
         booleanParam(name: 'DCHECK_ALWAYS_ON', defaultValue: true)
         string(name: 'DEVOPS_BRANCH', defaultValue: 'mplesa-jenkins-reclient')
         string(name: 'NODE_LABEL', defaultValue: '')
-        string(name: 'SLACK_NOTIFY', defaultValue: '')
+        string(name: 'SLACK_NOTIFY', defaultValue: '@mplesa')
     }
     stages {
         stage('build') {
@@ -60,7 +60,7 @@ pipeline {
                                 choiceParam('CHANNEL', ['nightly', 'dev', 'beta', 'release', 'development'])
                                 choiceParam('BUILD_TYPE', ["Static", "Release", "Component", "Debug"])
                                 booleanParam('WIPE_WORKSPACE', false)
-                                booleanParam('USE_GOMA', true)
+                                booleanParam('USE_GOMA', false)
                                 booleanParam('SKIP_ALL_LINTERS', false)
                                 booleanParam('SKIP_SIGNING', ${SKIP_SIGNING_DEFAULT})
                                 booleanParam('DCHECK_ALWAYS_ON', true)

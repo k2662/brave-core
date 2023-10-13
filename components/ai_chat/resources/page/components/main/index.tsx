@@ -36,13 +36,20 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldShowPremiumSuggestionForModel = !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldPromptSuggestQuestions = hasSeenAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
-  const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
+  const shouldShowPremiumSuggestionForModel = hasSeenAgreement && !context.isPremiumUser && context.currentModel?.isPremium
+
+  const shouldShowPremiumSuggestionStandalone =
+    hasSeenAgreement &&
+    !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
+    shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
+    !context.hasUserDissmisedPremiumPrompt &&
+    !siteInfo &&
+    !context.isPremiumUser
 
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
-  let promptAutoSuggestionElement = null
   let currentErrorElement = null
 
   if (hasSeenAgreement) {
@@ -50,10 +57,6 @@ function Main() {
 
     if (siteInfo) {
       siteTitleElement = <SiteTitle />
-    }
-
-    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
-      promptAutoSuggestionElement = <PromptAutoSuggestion />
     }
 
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
@@ -115,6 +118,14 @@ function Main() {
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
                 verbose={true}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => context.dismissPremiumPrompt()}
+                  >
+                    {getLocale('switchToDefaultModelButtonLabel')}
+                  </Button>
+                }
               />
             </div>
           )
@@ -139,7 +150,9 @@ function Main() {
         }
       </div>
       <div className={styles.inputBox}>
-        {promptAutoSuggestionElement}
+        {shouldPromptSuggestQuestions &&
+        <PromptAutoSuggestion />
+        }
         <InputBox />
       </div>
     </main>
